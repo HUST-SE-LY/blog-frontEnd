@@ -1,12 +1,20 @@
+<template>
+  <router-view></router-view>
+</template>
+
 <script setup>
+import { onMounted } from 'vue';
 import chart from './components/chart.vue';
 import l2d from './components/l2d.vue';
-</script>
+import music from './components/music.vue';
+import useAxios from './composables/useAxios';
 
-<template>
-  <chart></chart>
-  <l2d></l2d>
-</template>
+const axios = useAxios();
+
+onMounted(async () => {
+  
+})
+</script>
 
 <style scoped>
 .logo {

@@ -17,11 +17,25 @@ onMounted(() => {
 
 <style scoped>
 .live2d {
-  width: 100px;
+  width: 250px;
   height: auto;
   position: fixed;
   right: 0;
   bottom: 0;
   cursor: pointer;
 }
+
+@media screen and (max-width: 1280px){
+  .live2d {
+    width: 200px;
+  }  
+}
+
+@media screen and (max-width: 960px){
+  .live2d {
+    width: 150px;
+  }  
+}
+
+
 </style>
