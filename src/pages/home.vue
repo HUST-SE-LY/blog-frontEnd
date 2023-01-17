@@ -11,7 +11,11 @@
       <canvas id="main_canvas" ref="mainCanvas"></canvas>
       <tagList></tagList>
       <blogList></blogList>
-  
+      <div class="right_container">
+        <self></self>
+        <linkList></linkList>
+        <music></music>
+      </div>
     </div>
   </div>
 </template>
@@ -22,6 +26,9 @@ import headTag from '../components/headTag.vue';
 import typing from '../components/typing.vue';
 import tagList from '../components/tagList.vue';
 import blogList from '../components/blogList.vue';
+import self from '../components/self.vue';
+import linkList from '../components/linkList.vue';
+import music from '../components/music.vue';
 
 const mainCanvas = ref(null);
 const main = ref(null)
@@ -45,11 +52,11 @@ onMounted(() => {
     bubbleFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`,
     canvas: document.getElementById("main_canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
   });
+  window.addEventListener('resize', () => {
+    initCanvas();
+  })
 })
 
-window.addEventListener('resize',() => {
-  initCanvas();
-})
 
 
 
@@ -63,6 +70,19 @@ function handleScroll(e) {
 </script>
 
 <style scoped>
+@keyframes movein {
+  0% {
+    opacity: 0;
+    top: 55%;
+  }
+
+  100% {
+    opacity: 1;
+    top: 47%;
+  }
+
+}
+
 .home_container {
   height: 100vh;
   overflow-y: scroll;
@@ -98,7 +118,7 @@ function handleScroll(e) {
   box-sizing: border-box;
   min-height: 800px;
   display: grid;
-  grid-template-columns: 1fr 3fr 2fr;
+  grid-template-columns: 1fr 4fr 2fr;
   padding: 50px;
   gap: 50px;
 
@@ -106,7 +126,7 @@ function handleScroll(e) {
 
 
 .wrap {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
   position: absolute;
   top: 0;
   left: 0;
@@ -128,6 +148,7 @@ function handleScroll(e) {
   font-weight: 600;
   transition: all 0.3s;
   letter-spacing: 2px;
+  animation: movein 0.75s ease-out forwards;
 }
 
 .title:hover {
