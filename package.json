@@ -10,9 +10,11 @@
   },
   "dependencies": {
     "axios": "^1.2.2",
+    "canvas-nest.js": "^2.0.4",
     "echarts": "^5.4.1",
     "highlight.js": "^11.7.0",
     "vue": "^3.2.45",
+    "vue-canvas-nest": "^2.0.0",
     "vue-router": "4"
   },
   "devDependencies": {
