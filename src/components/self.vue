@@ -4,20 +4,34 @@
     <div class="avatar_box">
       <img src="../assets/avatar.png" alt="avatar">
       <div class="avatar_aside">
-        <p class="name">灼梦</p>
-        <p class="intro">前端萌新</p>
+        <p class="name">{{username}}</p>
+        <p class="intro">{{userTitle}}</p>
       </div>
       <a href="https://space.bilibili.com/291038650" target="_blank" class="logo"><img src="../assets/bilibili-line.svg"
           alt="bilibili" class="svg"></a>
       <a href="https://github.com/HUST-SE-LY" target="_blank" class="logo"> <img src="../assets/github.svg" alt="github"
           class="svg"></a>
     </div>
-    <p class="des">一个喜欢把思絮撒向远方的人...</p>
+    <p class="des">{{userIntro}}</p>
   </div>
 </template>
 
 <script setup>
 import titleHead from './titleHead.vue';
+import useAxios from '../composables/useAxios';
+import { ref, onMounted } from 'vue';
+
+const axios = useAxios();
+const username = ref("");
+const userTitle = ref("");
+const userIntro = ref("");
+
+onMounted(async () => {
+  const result = await axios.post('/get/userInfo');
+  username.value = result.data.user.username;
+  userTitle.value = result.data.user.title;
+  userIntro.value = result.data.user.introduction;
+})
 </script>
 
 <style scoped>

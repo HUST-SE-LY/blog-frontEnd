@@ -1,6 +1,5 @@
 <template>
   <div class="home_container" @scroll="handleScroll">
-    <headTag></headTag>
     <div class="background">
       <img src="../assets/homeBack.jpg" alt="background" class="back_pic">
       <div class="wrap"></div>
@@ -137,7 +136,7 @@ function handleScroll(e) {
 .title {
   width: 100%;
   text-align: center;
-  background: linear-gradient(to right, purple 50%, white, white);
+  background: linear-gradient(to right,rgb(95, 142, 244)  50%, white, white);
   background-size: 300%;
   background-position: 90%;
   -webkit-background-clip: text;
@@ -146,7 +145,7 @@ function handleScroll(e) {
   top: 47%;
   font-size: 56px;
   font-weight: 600;
-  transition: all 0.3s;
+  transition: all 1s;
   letter-spacing: 2px;
   animation: movein 0.75s ease-out forwards;
 }

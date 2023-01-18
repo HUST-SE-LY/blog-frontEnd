@@ -1,13 +1,20 @@
 <template>
   <div class="music_container">
-    <titleHead>肥宅快乐歌</titleHead>
+    <titleHead>BGM</titleHead>
     <p v-if="isLoading">加载歌单中</p>
     <div class="button_box" v-else>
-      <p class="name">当前歌曲：{{ currentSongName }}</p>
-
+      <p class="name">当前歌曲：<span style="color: rgba(130, 170, 255); margin-right: 10px;">{{ currentSongName }}</span><button @click="changeMusic('random')">随机一首</button></p>
+      <div class="loading_box">
+        <p class="music_time">{{songCurrentTime}}</p>
+        <div class="loading_ball" @click="movingDuration">
+          <div class="have_loaded"></div>
+        </div>
+        <p class="music_time">{{songTime}}</p>
+      </div>
       <button @click="changeMusic('last')">上一首</button>
       <button @click="changePlayState">{{ playState }}</button>
       <button @click="changeMusic('next')">下一首</button>
+      <button @click="changePlayList">切换歌单</button>
     </div>
     <div class="lyr_container">
       <p>{{ currentLyc }}</p>
@@ -34,11 +41,15 @@ const lyricsTrans = ref([]);
 const lyrTime = ref([]);
 const currentLycIndex = ref(0);
 const currentLyc = ref("");
-const currentTlyc = ref("")
+const currentTlyc = ref("");
+const playListId = ref(2517473337);
+const songCurrentTime = ref('0:00');
+const songTime = ref('0:00');
+const loadingLength = ref('0px');
 
 onMounted(async () => {
   isLoading.value = true;
-  const result = await axios.get("playlist/track/all?id=2172060689");
+  const result = await axios.get(`https://netease-cloud-music-2lcevlrwk-hust-se-ly.vercel.app/playlist/track/all?id=${playListId.value}`);
   isLoading.value = false;
   playList.value = result.data.songs;
   currentSongName.value = result.data.songs[0].name;
@@ -54,8 +65,10 @@ async function changePlayState() {
       if (lyrResult.data.tlyric) {
         handleTrans(lyrResult.data.tlyric.lyric);
       }
+      console.log(lyrResult.data.lrc.lyric)
       handleLyr(lyrResult.data.lrc.lyric)
     }
+    songTime.value = handleSongTime(audio.value.duration);
     audio.value.play();
     playState.value = '暂停';
   }
@@ -65,11 +78,34 @@ async function changePlayState() {
   }
 }
 
+async function changePlayList() {
+  if(playListId.value === 2517473337) {
+    playListId.value = 2172060689;
+  } else {
+    playListId.value = 2517473337;
+  }
+  isLoading.value = true;
+  const result = await axios.get(`https://netease-cloud-music-2lcevlrwk-hust-se-ly.vercel.app/playlist/track/all?id=${playListId.value}`);
+  isLoading.value = false;
+  playList.value = result.data.songs;
+  currentUrl.value = "";
+  currentLycIndex.value = 0;
+  currentIndex.value = 0;
+  lyrics.value = [];
+  lyricsTrans.value = [];
+  lyrTime.value = [];
+  currentLyc.value = '';
+  currentTlyc.value = ''; 
+  currentSongName.value = result.data.songs[0].name;
+  playState.value = "播放";
+  songTime.value = '0:00';
+}
+
 function handleTrans(lyricsList) {
   const list = lyricsList.split('\n');
-  console.log(lyricsList)
+  console.log(list)
   for (let i = 0; i < list.length; i++) {
-    if (list[i][0] === '[') {
+    if (list[i][0] === '['&& list[i][1] === '0') {
       lyricsTrans.value.push(list[i].split(']')[1]);
     }
   }
@@ -78,7 +114,7 @@ function handleTrans(lyricsList) {
 function handleLyr(lyricsList) {
   const list = lyricsList.split('\n');
   for (let i = 0; i < list.length; i++) {
-    if (list[i][0] === '[') {
+    if (list[i][0] === '[' && list[i][1] === '0') {
       const time = handleTime(list[i].split("]")[0]);
       lyrTime.value.push(time)
       lyrics.value.push(list[i].split(']')[1]);
@@ -88,8 +124,11 @@ function handleLyr(lyricsList) {
 
 
 
+
+
 function timeUpdate(e) {
-  console.log(lyrics.value, lyricsTrans.value, lyrTime.value)
+  songCurrentTime.value = handleSongTime(e.target.currentTime);
+  loadingLength.value = judgeLoadingLength(e.target.currentTime);
   if (e.target.currentTime >= lyrTime.value[currentLycIndex.value]) {
     currentLyc.value = lyrics.value[currentLycIndex.value];
     currentTlyc.value = lyricsTrans.value[currentLycIndex.value];
@@ -103,10 +142,29 @@ function handleTime(time) {
   return minutes * 60 + parseFloat(time.split(":")[1]);
 }
 
+function handleSongTime(time) {
+  const minute = parseInt(parseFloat(time)/60);
+  const second = parseInt(time - 60*minute) < 10? `0${parseInt(time - 60*minute)}`: parseInt(time - 60*minute);
+  return `${minute}:${second}`
+}
+
+function judgeLoadingLength(time) {
+  if(audio.value.duration) {
+    const length = (time/audio.value.duration)*200;
+    return length + 'px';
+  }
+  return 0;
+}
+
+function movingDuration(e) {
+  audio.value.currentTime = audio.value.duration * (e.offsetX / 200);
+}
+
 async function changeMusic(mode) {
   if(playState.value === '加载中') {
     return;
   }
+  songTime.value = '0:00';
   currentUrl.value = "";
   currentLycIndex.value = 0;
   lyrics.value = [];
@@ -119,6 +177,9 @@ async function changeMusic(mode) {
   }
   if (mode === 'last') {
     currentIndex.value--;
+  }
+  if( mode === 'random') {
+    currentIndex.value = Math.floor(Math.random() * playList.value.length);
   }
   if (currentIndex.value === playList.value.length) {
     currentIndex.value = 0;
@@ -136,6 +197,7 @@ async function changeMusic(mode) {
     handleTrans(lyrResult.data.tlyric.lyric);
   }
   handleLyr(lyrResult.data.lrc.lyric);
+  songTime.value = handleSongTime(audio.value.duration);
   audio.value.play()
   playState.value = '暂停';
 }
@@ -165,10 +227,17 @@ button {
   padding: 5px 10px;
   background-color: transparent;
   border-radius: 20px;
-  border: none;
   margin-right: 20px;
-  border: 2px solid rgba(130, 170, 255, .75);
+  border: 1px solid rgba(130, 170, 255, .75);
   cursor: pointer;
+  transition: all 0.3s;
+  margin-bottom: 10px;
+}
+
+button:hover {
+  background-color: rgba(130, 170, 255, .75);
+  color: white;
+  border: white 1px solid;
 }
 
 .name {
@@ -179,6 +248,36 @@ button {
   margin-top: 20px;
   font-size: 14px;
   color: gray;
+
+}
+
+.music_time {
+  font-size: 12px;
+  color: gray;
+}
+
+.loading_box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.loading_ball {
+  width: 200px;
+  height: 1px;
+  background-color: gray;
+  position: relative;
+  cursor: pointer;
+}
+
+.have_loaded {
+  position: absolute;
+  width: v-bind(loadingLength);
+  height: 5px;
+  background-color: rgba(130, 170, 255);
+  top: -2px;
+  border-radius: 4px;
 
 }
 </style>

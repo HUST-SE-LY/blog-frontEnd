@@ -2,19 +2,23 @@
   <div class="link_list_container">
     <titleHead>常用网址</titleHead>
     <div class="link_box">
-      <a href="https://www.bilibili.com" target="_blank">哔哩哔哩</a>
-      <a href="https://www.bilibili.com" target="_blank">github</a>
-      <a href="https://www.bilibili.com" target="_blank">dribbble</a>
-      <a href="https://www.bilibili.com" target="_blank">google</a>
-      <a href="https://www.bilibili.com" target="_blank">vue</a>
-      <a href="https://www.bilibili.com" target="_blank">react</a>
-      <a href="https://www.bilibili.com" target="_blank">图标库</a>
+      <a v-for="link in linkList" :href="link.url">{{link.name}}</a>
     </div>
   </div>
 </template>
 
 <script setup>
 import titleHead from './titleHead.vue';
+import useAxios from '../composables/useAxios';
+import { onMounted, ref } from 'vue';
+
+const axios = useAxios();
+const linkList = ref([])
+
+onMounted(async () => {
+  const result = await axios.post("/get/link");
+  linkList.value = result.data.links;
+})
 </script>
 
 <style scoped>

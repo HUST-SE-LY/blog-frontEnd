@@ -15,7 +15,7 @@
   outline: none;
   border-radius: 20px;
   border: 1px solid white;
-  background-color: rgba(255,255,255,0.5);
+  background-color: rgba(255,255,255,0.1);
   color: white;
   padding-left: 15px;
   box-sizing: border-box;

@@ -1,4 +1,5 @@
 <template>
+  <headTag></headTag>
   <router-view></router-view>
 </template>
 
@@ -8,6 +9,7 @@ import chart from './components/chart.vue';
 import l2d from './components/l2d.vue';
 import music from './components/music.vue';
 import useAxios from './composables/useAxios';
+import headTag from './components/headTag.vue';
 
 const axios = useAxios();
 

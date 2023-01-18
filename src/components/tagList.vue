@@ -2,11 +2,7 @@
   <div class="tag_list_container">
     <titleHead>常用tag</titleHead>
     <div class="tag_box">
-      <singleTag>123</singleTag>
-      <singleTag>12345</singleTag>
-      <singleTag>12311</singleTag>
-      <singleTag>1232</singleTag>
-      <singleTag>123223</singleTag>
+      <singleTag v-for="tag in tagList">{{tag.name}}</singleTag>
     </div>
   </div>
 </template>
@@ -14,6 +10,16 @@
 <script setup>
 import titleHead from './titleHead.vue';
 import singleTag from './singleTag.vue';
+import useAxios from '../composables/useAxios';
+import { onMounted,ref } from 'vue';
+
+const axios = useAxios();
+const tagList = ref([]);
+
+onMounted(async () => {
+  const result = await axios.post('/get/tag');
+  tagList.value = result.data.tags;
+})
 </script>
 
 <style scoped>

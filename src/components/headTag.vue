@@ -1,7 +1,7 @@
 <template>
   <div class="head_container">
-    <p>首页</p>
-    <p>后台</p>
+    <router-link to="/home" class="link">首页</router-link>
+    <router-link to="/back" class="link">后台</router-link>
     <div class="right">
       <searchBar></searchBar>
       <div class="avatar"></div>
@@ -11,6 +11,19 @@
 
 <script setup>
 import searchBar from './searchBar.vue';
+import {useRoute} from 'vue-router';
+import { ref, watch } from 'vue';
+
+const color = ref("transparent");
+const routes = useRoute();
+watch(() => routes.path,(newVal) => {
+  if(newVal === '/back') {
+    color.value = "rgba(130, 170, 255,0.75)";
+  }
+  if(newVal === '/home') {
+    color.value = 'transparent';
+  }
+})
 </script>
 
 <style scoped>
@@ -38,10 +51,32 @@ import searchBar from './searchBar.vue';
   box-sizing: border-box;
   padding: 0 200px 0 100px;
   animation: movein 0.75s ease-out forwards;
+  background-color: v-bind(color);
 }
 
+.router-link-active {
+  position: relative;
+}
+
+.router-link-active::before {
+  position: absolute;
+  height: 30px;
+  width: 3px;
+  background-color: rgba(130, 170, 255);
+  left: -10px;
+  top: calc(50% - 15px);
+  
+  content:"";
+
+}
 .right{
   margin-left: auto;
+}
+
+.link {
+  color: white;
+  text-decoration: none;
+
 }
 
 </style>
