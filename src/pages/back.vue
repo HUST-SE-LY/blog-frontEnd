@@ -7,13 +7,17 @@
     </div>
     <div class="center">
       <chart></chart>
+      <div class="center_bottom">
+        <uploadBlog></uploadBlog>
+        <manageBlog></manageBlog>
+      </div>
     </div>
     <div class="right">
       <setTag></setTag>
       <setLink></setLink>
     </div>
-
   </div>
+  <l2d></l2d>
 </template>
 
 <script setup>
@@ -23,6 +27,9 @@ import music from '../components/music.vue';
 import chart from '../components/chart.vue';
 import setTag from '../components/setTag.vue';
 import setLink from '../components/setLink.vue';
+import uploadBlog from '../components/uploadBlog.vue';
+import manageBlog from '../components/manageBlog.vue';
+import l2d from '../components/l2d.vue';
 const container = ref(null);
 const mainCanvas = ref(null);
 
@@ -67,5 +74,11 @@ onMounted(() => {
   top: 0;
   left: 0;
   z-index: -10000;
+}
+
+.center_bottom {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 10px;
 }
 </style>

@@ -2,14 +2,13 @@
   <div class="set_tag_container">
     <titleHead>编辑常用标签</titleHead>
     <div class="tag_box">
-      <singleTag v-for="tag in tagList">{{tag.name}}</singleTag>
+      <singleTag v-for="tag in tagList" :key="tag.id" @click="deleteTag(tag.id)">{{tag.name}}</singleTag>
     </div>
     <div class="input_box">
       <p :class="isFocus?'p_focus':(tagName?'':'p_origin')">标签名</p>
       <input type="text" v-model="tagName" :class="isFocus?'input_focus':''" @focusin="isFocus = true" @focusout="isFocus = false">
       <span class="add_button" @click="addTag">添加</span>
     </div>
-
   </div>
 </template>
 
@@ -38,6 +37,13 @@ async function freshTag() {
   tagList.value = result.data.tags;
 }
 
+async function deleteTag(id) {
+  const result = await axios.post("/delete/tag",{
+    id: id,
+  })
+  freshTag();
+}
+
 onMounted(async () => {
   const result = await axios.post('/get/tag');
   tagList.value = result.data.tags;
@@ -58,7 +64,6 @@ onMounted(async () => {
 }
 
 .set_tag_container:hover {
-  scale: 1.02;
   box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
 }
 

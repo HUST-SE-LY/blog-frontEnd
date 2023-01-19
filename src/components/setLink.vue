@@ -2,7 +2,7 @@
   <div class="set_link_container">
     <titleHead>编辑常用网址</titleHead>
     <div class="link_box">
-      <a v-for="link in linkList" :href="link.url">{{link.name}}</a>
+      <div class="a" v-for="link in linkList" :href="link.url" :key="link.id" @click="deleteLink(link.id)">{{link.name}}</div>
     </div>
     <div class="input_box">
       <p :class="isNameFocus?'p_focus':(linkName?'':'p_origin')">网址名</p>
@@ -39,6 +39,13 @@ async function freshLink() {
   linkList.value = result.data.links;
 }
 
+async function deleteLink(id) {
+  await axios.post('/delete/link',{
+    id: id,
+  })
+  freshLink();
+}
+
 async function addLink() {
   if((!linkName.value)||(!url.value)) return;
   await axios.post('/set/link',{
@@ -66,7 +73,6 @@ async function addLink() {
 }
 
 .set_link_container:hover {
-  scale: 1.02;
   box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
 }
 
@@ -91,7 +97,7 @@ input {
   flex-wrap: wrap;
 }
 
-a {
+.a {
   text-decoration: none;
   color: black;
   padding: 5px 20px;
@@ -99,9 +105,10 @@ a {
   border-radius: 20px;
   display: block;
   font-size: 14px;
+  cursor: pointer;
 }
 
-a:hover {
+.a:hover {
   background-color: rgba(130, 170, 255,.75);
   color:white;
 }

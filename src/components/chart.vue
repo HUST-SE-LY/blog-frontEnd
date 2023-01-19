@@ -7,24 +7,38 @@
 
 <script setup>
 import * as echarts from 'echarts';
+import useAxios from '../composables/useAxios';
 import { onMounted, ref } from 'vue';
-
-onMounted(() => {
-  const calendar = document.getElementById('calendar');
-  const chart = echarts.init(calendar);
-  function getVirtualData(year) {
+async function getData(year) {
     const date = +echarts.time.parse(year + '-01-01');
     const end = +echarts.time.parse(+year + 1 + '-01-01');
     const dayTime = 3600 * 24 * 1000;
     const data = [];
-    for (let time = date; time < end; time += dayTime) {
+    const result = await axios.post('/get/allDate');
+    const dateArray = result.data.dates;
+    for (let time = date; time < end; time += dayTime) {   
+      let num = 0;
+      const currentTime = echarts.time.format(time, '{yyyy}-{MM}-{dd}', false)
+      for(let i = 0; i < dateArray.length; i++) {
+        if(currentTime === dateArray[i].date.split("T")[0]) {
+          num++;
+        }
+      }  
       data.push([
         echarts.time.format(time, '{yyyy}-{MM}-{dd}', false),
-        Math.floor(Math.random() * 3)
+        num,
       ]);
     }
     return data;
   }
+
+const axios = useAxios();
+
+onMounted(async () => {
+  const calendar = document.getElementById('calendar');
+  const chart = echarts.init(calendar);
+  const year = new Date().getFullYear();
+  const data = await getData(year);
   const option = {
     title: {
       top: 0,
@@ -46,7 +60,7 @@ onMounted(() => {
       left: 30,
       right: 30,
       cellSize: ['auto', 'auto'],
-      range: '2016',
+      range: '2023',
       itemStyle: {
         borderWidth: 2,
         borderColor: 'rgba(255,255,255,0)'
@@ -57,7 +71,7 @@ onMounted(() => {
     series: {
       type: 'heatmap',
       coordinateSystem: 'calendar',
-      data: getVirtualData('2016')
+      data: data,
     }
   }
   chart.setOption(option);
@@ -86,7 +100,6 @@ onMounted(() => {
 }
 
 .calendar_box:hover {
-  scale: 1.02;
   box-shadow: 0px 0px 2px rgba(0, 0, 0, 0.2);
 }
 

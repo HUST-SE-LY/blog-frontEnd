@@ -59,7 +59,6 @@ async function save() {
 }
 
 .set_self_container:hover {
-  scale: 1.02;
   box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
 }
 
