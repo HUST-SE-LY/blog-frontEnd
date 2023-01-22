@@ -10,7 +10,7 @@ const routes = [
     redirect:'/home',
   },
   {
-    path:'/blog',
+    path:'/blog/:id',
     component: blog,
     meta:{
       title:'博客喵～'

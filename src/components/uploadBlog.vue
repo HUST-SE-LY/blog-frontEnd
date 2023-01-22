@@ -74,6 +74,12 @@ async function upload() {
     })
   } catch (e) {
     emit("expired");
+  } finally {
+    title.value = "";
+    des.value = "";
+    tagList.value = "";
+    blogChooseState.value = "选择博客文件";
+    pictureChooseState.value = "选择封面图";
   }
 }
 

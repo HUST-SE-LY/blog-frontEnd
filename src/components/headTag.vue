@@ -17,11 +17,10 @@ import { ref, watch } from 'vue';
 const color = ref("transparent");
 const routes = useRoute();
 watch(() => routes.path,(newVal) => {
-  if(newVal === '/back') {
-    color.value = "rgba(130, 170, 255,0.75)";
-  }
   if(newVal === '/home') {
     color.value = 'transparent';
+  } else {
+    color.value = "rgba(130, 170, 255,0.75)";
   }
 })
 </script>
@@ -52,6 +51,7 @@ watch(() => routes.path,(newVal) => {
   padding: 0 200px 0 100px;
   animation: movein 0.75s ease-out forwards;
   background-color: v-bind(color);
+
 }
 
 .router-link-active {
@@ -65,7 +65,6 @@ watch(() => routes.path,(newVal) => {
   background-color: rgba(130, 170, 255);
   left: -10px;
   top: calc(50% - 15px);
-  
   content:"";
 
 }

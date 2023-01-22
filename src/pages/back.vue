@@ -1,9 +1,9 @@
 <template>
   <div ref="container" class="back_container">
-    <canvas ref="mainCanvas" class="canvas"></canvas>
+    <canvas ref="mainCanvas" class="canvas" id="main_canvas"></canvas>
     <div class="left">
       <setSelf></setSelf>
-      <music></music>
+      <music class="music"></music>
     </div>
     <div class="center">
       <chart></chart>
@@ -21,7 +21,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import setSelf from '../components/setSelf.vue';
 import music from '../components/music.vue';
 import chart from '../components/chart.vue';
@@ -30,12 +30,23 @@ import setLink from '../components/setLink.vue';
 import uploadBlog from '../components/uploadBlog.vue';
 import manageBlog from '../components/manageBlog.vue';
 import l2d from '../components/l2d.vue';
+import { useRoute } from 'vue-router';
 const container = ref(null);
 const mainCanvas = ref(null);
+const route = useRoute();
 
 function initCanvas() {
   mainCanvas.value.width = container.value.offsetWidth;
   mainCanvas.value.height = container.value.offsetHeight;
+  bubbly({
+    colorStart: "#ffffff",
+    colorStop: "#ffffff",
+    blur: 1,
+    compose: "source-over",
+    bubbles: 30,
+    bubbleFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`,
+    canvas: mainCanvas.value, // default is created and attached// default is 4 + Math.random() * width / 25
+  });
 }
 
 onMounted(() => {
@@ -56,16 +67,32 @@ onMounted(() => {
 </script>
 
 <style scoped>
+
+@keyframes movein {
+  from {
+    transform: translateY(100px);
+    scale: 0.8;
+    opacity: 0;
+  } to {
+    scale: 1;
+    opacity: 1;
+    transform: translateY(0px);
+  }
+}
 .back_container {
   width: 100%;
-  overflow: hidden;
+  height: 100vh;
   display: grid;
   grid-template-columns: 1fr 3fr 1fr;
-  margin-top: 100px;
   position: relative;
   box-sizing: border-box;
-  padding: 10px 50px;
+  padding: 100px 50px;
   gap: 20px;
+  overflow: hidden;
+}
+
+.music:hover {
+  scale: 1;
 }
 
 .canvas {
@@ -73,7 +100,7 @@ onMounted(() => {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: -10000;
+  z-index: -100;
 }
 
 .center_bottom {
@@ -81,4 +108,11 @@ onMounted(() => {
   grid-template-columns: 1fr 2fr;
   gap: 10px;
 }
+
+.left,.center,.right {
+  transition: all 0.3s;
+  animation: movein 0.5s forwards ease-out;
+}
+
+
 </style>

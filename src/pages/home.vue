@@ -1,11 +1,13 @@
 <template>
   <div class="home_container" @scroll="handleScroll">
     <div class="background">
+      <typing word="Coisíní's Blog" class="head_title"></typing>
       <img src="../assets/homeBack.jpg" alt="background" class="back_pic">
       <div class="wrap"></div>
       <div class="title">Coisíní's Blog</div>
       <typing word="縱有疾風起，人生不言棄" class="sub_title"></typing>
     </div>
+    <img src="../assets/homeBack.jpg" alt="background" class="back_pic pic">
     <div class="home_main" id="main" ref="main">
       <canvas id="main_canvas" ref="mainCanvas"></canvas>
       <tagList></tagList>
@@ -33,7 +35,6 @@ const mainCanvas = ref(null);
 const main = ref(null)
 const width = ref("");
 const height = ref("")
-const movingY = ref('0px')
 
 function initCanvas() {
   mainCanvas.value.width = main.value.offsetWidth;
@@ -56,16 +57,6 @@ onMounted(() => {
   })
 })
 
-
-
-
-
-function handleScroll(e) {
-  if (e.srcElement.scrollTop + e.srcElement.offsetHeight >= e.srcElement.scrollHeight - 5) {
-    return
-  }
-  movingY.value = -e.srcElement.scrollTop + 'px';
-}
 </script>
 
 <style scoped>
@@ -86,7 +77,11 @@ function handleScroll(e) {
   height: 100vh;
   overflow-y: scroll;
   position: relative;
-  background-color: black;
+  background-color: white;
+}
+
+.home_container::-webkit-scrollbar {
+  display: none;
 }
 
 #main_canvas {
@@ -100,18 +95,25 @@ function handleScroll(e) {
 .background {
   width: 100%;
   height: fit-content;
-  position: relative;
+  position: fixed;
+  top: 0;
+
+
 }
 
 .back_pic {
   width: 100%;
+  pointer-events: none;
+}
+
+.pic {
+  opacity: 0;
 }
 
 .home_main {
   height: 90vh;
   position: relative;
   width: 100%;
-  margin-top: v-bind(movingY);
   background: white;
   z-index: 1000;
   box-sizing: border-box;
@@ -120,9 +122,12 @@ function handleScroll(e) {
   grid-template-columns: 1fr 4fr 2fr;
   padding: 50px;
   gap: 50px;
-
+  box-shadow: 0 0 20px rgba(0,0,0,0.2);
 }
 
+.home_main::-webkit-scrollbar {
+  display: none;
+}
 
 .wrap {
   background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
@@ -158,5 +163,12 @@ function handleScroll(e) {
   position: absolute;
   top: 35%;
   font-size: 24px;
+}
+
+.head_title {
+  position: absolute;
+  top: 2%;
+  font-size: 24px;
+  z-index: 1;
 }
 </style>

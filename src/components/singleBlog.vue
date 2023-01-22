@@ -1,19 +1,17 @@
 <template>
   <div class="single_blog_container">
     <div class="left">
-      <p class="title">博客title</p>
-      <p class="content">测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容测试内容</p>
+      <p class="title" @click="intoDetail">{{blogInfo.title}}</p>
+      <p class="content">{{blogInfo.des}}</p>
       <div class="bottom">
-        <div class="date">2023-1-1</div>
+        <div class="date">{{blogInfo.date.split('T')[0]}}</div>
         <div class="tag_box">
-          <singleTag>123</singleTag>
-          <singleTag>123</singleTag>
-          <singleTag>123</singleTag>
+          <singleTag v-for="tag in tagList" :key="tag.id">{{tag.name}}</singleTag>
         </div>
       </div>
     </div>
     <div class="right">
-      <img src="../assets/homeBack.jpg" alt="" class="home_pic">
+      <img :src="`http://127.0.0.1:6324/picture/${props.blogInfo.picture}`" alt="" class="home_pic">
     </div>
 
   </div>
@@ -21,19 +19,54 @@
 
 <script setup>
 import singleTag from './singleTag.vue';
+import useAxios from '../composables/useAxios';
+import { onMounted, ref } from 'vue';
+import { useRouter } from 'vue-router';
+const router = useRouter();
+const props = defineProps(['blogInfo']);
+const axios = useAxios();
+const tagList = ref([]);
+
+onMounted(async () => {
+  const result = await axios.post('/get/blogTag',{
+    id: props.blogInfo.id,
+  })
+  tagList.value = result.data.tags;
+})
+
+async function intoDetail() {
+  router.push(`/blog/${props.blogInfo.id}`)
+}
 </script>
 
 <style scoped>
+@keyframes movein {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  } to {
+    opacity: 1;
+    transform: translateY(0px);
+  }
+  
+}
 .single_blog_container {
   display: flex;
   align-items: center;
   margin-bottom: 40px;
+  animation: movein 0.3s ease-out forwards;
 }
 
 
 .title {
   font-size: 20px;
   margin-bottom: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.title:hover {
+  color: rgba(130, 170, 255);
 }
 
 .content {

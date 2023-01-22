@@ -10,11 +10,13 @@ import * as echarts from 'echarts';
 import useAxios from '../composables/useAxios';
 import { onMounted, ref } from 'vue';
 async function getData(year) {
+    console.log(new Date())
     const date = +echarts.time.parse(year + '-01-01');
     const end = +echarts.time.parse(+year + 1 + '-01-01');
     const dayTime = 3600 * 24 * 1000;
     const data = [];
     const result = await axios.post('/get/allDate');
+    console.log(result)
     const dateArray = result.data.dates;
     for (let time = date; time < end; time += dayTime) {   
       let num = 0;
@@ -29,6 +31,7 @@ async function getData(year) {
         num,
       ]);
     }
+
     return data;
   }
 
@@ -50,7 +53,6 @@ onMounted(async () => {
       min: 0,
       max: 5,
       type: 'piecewise',
-      categories:[0,1,2],
       orient: 'horizontal',
       left: 'center',
       top: 30,
