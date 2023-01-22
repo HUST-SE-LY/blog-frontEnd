@@ -1,6 +1,5 @@
 <template>
   <headTag></headTag>
-  <login></login>
   <router-view v-slot="{ Component }">
     <Transition name="fade" >
       <component :is="Component"></component>

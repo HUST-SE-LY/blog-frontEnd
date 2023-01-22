@@ -1,21 +1,43 @@
 <template>
+  <toast v-if="showToast">密码错误</toast>
   <div class="login_container">
-    <titleHead>登陆</titleHead>
+    <p class="close" @click="store.commit('closeLogin')">关闭</p>
+    <titleHead>登录</titleHead>
     <div class="input_box">
-      <p :class="isFocus?'p_focus':(tagName?'':'p_origin')">密码</p>
+      <p :class="isFocus?'p_focus':(password?'':'p_origin')">密码</p>
       <input type="password" v-model="password" :class="isFocus?'input_focus':''" @focusin="isFocus = true" @focusout="isFocus = false">
-      <div class="button" @click="login">登陆</div>
+      <div class="button" @click="login">登录</div>
     </div>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue';
+import { useStore } from 'vuex';
 import titleHead from './titleHead.vue';
-
+import useAxios from '../composables/useAxios';
+import toast from './toast.vue';
+const axios = useAxios();
+const store = useStore();
 const isFocus = ref(false);
 const password = ref("");
-
+const showToast = ref(false);
+async function login() {
+  const result = await axios.post('/login',{
+    password: password.value,
+  })
+  if(result.data.success) {
+    const token = result.data.token;
+    localStorage.setItem('token',token);
+    store.commit('login');
+    store.commit('closeLogin');
+  } else {
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    },5000)
+  }
+}
 </script>
 
 <style scoped>
@@ -38,10 +60,13 @@ const password = ref("");
 .login_container:hover {
   box-shadow: 0px 0px 2px rgba(0,0,0,0.2);
 }
+
 .input_box {
   margin: 10px 0;
   position: relative;
 }
+
+
 
 input {
   width: 100%;
@@ -82,6 +107,18 @@ p {
   width: fit-content;
   padding: 5px 20px;
   cursor: pointer;
+}
+
+.close {
+  font-size: 12px;
+  text-align: right;
+  transition: all 0.3s;
+  pointer-events: fill;
+  cursor: pointer;
+}
+
+.close:hover {
+  color: rgba(130, 170, 255);
 }
 
 

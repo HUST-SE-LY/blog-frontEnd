@@ -39,5 +39,6 @@
   font-size: 12px;
   text-align: center;
   animation: movein 0.5s forwards 0s linear, out 0.5s forwards 3s linear;
+  z-index: 100000;
 }
 </style>

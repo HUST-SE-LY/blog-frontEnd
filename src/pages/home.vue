@@ -1,4 +1,7 @@
 <template>
+  <Transition name="login">
+    <login v-if="isShowLogin"></login>
+  </Transition>
   <div class="home_container" @scroll="handleScroll">
     <div class="background">
       <typing word="Coisíní's Blog" class="head_title"></typing>
@@ -22,7 +25,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import headTag from '../components/headTag.vue';
 import typing from '../components/typing.vue';
 import tagList from '../components/tagList.vue';
@@ -30,11 +33,31 @@ import blogList from '../components/blogList.vue';
 import self from '../components/self.vue';
 import linkList from '../components/linkList.vue';
 import music from '../components/music.vue';
+import login from '../components/login.vue';
+import { useStore } from 'vuex';
+import { computed } from '@vue/reactivity';
+import { onBeforeRouteLeave } from 'vue-router';
 
+const store = useStore();
 const mainCanvas = ref(null);
 const main = ref(null)
 const width = ref("");
 const height = ref("")
+
+onBeforeRouteLeave((to,from,next) => {
+  if(to.path === '/back') {
+    
+    if(store.state.isLogin) {
+      next()
+    } else {
+      store.commit('showLogin')
+    }
+  } else {
+    next();
+  }
+})
+
+const isShowLogin = computed(() => store.state.showLoginBox);
 
 function initCanvas() {
   mainCanvas.value.width = main.value.offsetWidth;
@@ -71,6 +94,20 @@ onMounted(() => {
     top: 47%;
   }
 
+}
+
+.login-enter-from,.login-leave-to {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.login-enter-to, .login-leave-from {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.login-enter-active, .login-leave-active {
+  transition: all 0.3s;
 }
 
 .home_container {

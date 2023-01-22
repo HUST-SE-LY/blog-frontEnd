@@ -27,8 +27,8 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import titleHead from './titleHead.vue';
-import useAxios from '../composables/useAxios';
-const axios = useAxios();
+import useMusicAxios from "../composables/useMusicAxios"
+const axios = useMusicAxios();
 const isLoading = ref(false);
 const playList = ref([]);
 const currentSongName = ref('');
@@ -49,7 +49,7 @@ const loadingLength = ref('0px');
 
 onMounted(async () => {
   isLoading.value = true;
-  const result = await axios.get(`https://netease-cloud-music-2lcevlrwk-hust-se-ly.vercel.app/playlist/track/all?id=${playListId.value}`);
+  const result = await axios.get(`/playlist/track/all?id=${playListId.value}`);
   isLoading.value = false;
   playList.value = result.data.songs;
   currentSongName.value = result.data.songs[0].name;
@@ -59,9 +59,9 @@ async function changePlayState() {
   if (playState.value === '播放') {
     if (currentUrl.value === '') {
       playState.value = '加载中';
-      const result = await axios.get(`https://netease-cloud-music-2lcevlrwk-hust-se-ly.vercel.app/song/url?id=${playList.value[currentIndex.value].id}`);
+      const result = await axios.get(`/song/url?id=${playList.value[currentIndex.value].id}`);
       currentUrl.value = result.data.data[0].url;
-      const lyrResult = await axios.get(`https://netease-cloud-music-2lcevlrwk-hust-se-ly.vercel.app/lyric/new?id=${playList.value[currentIndex.value].id}`);
+      const lyrResult = await axios.get(`/lyric/new?id=${playList.value[currentIndex.value].id}`);
       if (lyrResult.data.tlyric) {
         handleTrans(lyrResult.data.tlyric.lyric);
       }
@@ -85,7 +85,7 @@ async function changePlayList() {
     playListId.value = 2517473337;
   }
   isLoading.value = true;
-  const result = await axios.get(`https://netease-cloud-music-2lcevlrwk-hust-se-ly.vercel.app/playlist/track/all?id=${playListId.value}`);
+  const result = await axios.get(`/playlist/track/all?id=${playListId.value}`);
   isLoading.value = false;
   playList.value = result.data.songs;
   currentUrl.value = "";
@@ -189,9 +189,9 @@ async function changeMusic(mode) {
   }
   currentSongName.value = playList.value[currentIndex.value].name;
   playState.value = '加载中'
-  const result = await axios.get(`https://netease-cloud-music-2lcevlrwk-hust-se-ly.vercel.app/song/url?id=${playList.value[currentIndex.value].id}`);
+  const result = await axios.get(`/song/url?id=${playList.value[currentIndex.value].id}`);
   currentUrl.value = result.data.data[0].url;
-  const lyrResult = await axios.get(`https://netease-cloud-music-2lcevlrwk-hust-se-ly.vercel.app/lyric/new?id=${playList.value[currentIndex.value].id}`);
+  const lyrResult = await axios.get(`/lyric/new?id=${playList.value[currentIndex.value].id}`);
   console.log(lyrResult);
   if (lyrResult.data.tlyric) {
     handleTrans(lyrResult.data.tlyric.lyric);

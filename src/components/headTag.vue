@@ -3,16 +3,23 @@
     <router-link to="/home" class="link">首页</router-link>
     <router-link to="/back" class="link">后台</router-link>
     <div class="right">
-      <searchBar></searchBar>
-      <div class="avatar"></div>
+      <div class="button" v-if="!isLogin" @click="store.commit('showLogin')">登录</div>
+      <div class="avatar" v-else></div>
     </div>   
   </div>
 </template>
 
 <script setup>
-import searchBar from './searchBar.vue';
 import {useRoute} from 'vue-router';
 import { ref, watch } from 'vue';
+import { useStore } from 'vuex';
+import { computed } from '@vue/reactivity';
+const store = useStore();
+const isLogin = computed(() => {
+  return store.state.isLogin
+});
+
+
 
 const color = ref("transparent");
 const routes = useRoute();
@@ -26,6 +33,15 @@ watch(() => routes.path,(newVal) => {
 </script>
 
 <style scoped>
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  background-image: url(../assets/avatar.png);
+  border-radius: 20px;
+  background-size: cover;
+}
+
 @keyframes movein {
   from {
     opacity: 0;
@@ -70,6 +86,9 @@ watch(() => routes.path,(newVal) => {
 }
 .right{
   margin-left: auto;
+  display: flex;
+  gap: 20px;
+  align-items: center;
 }
 
 .link {
@@ -78,4 +97,13 @@ watch(() => routes.path,(newVal) => {
 
 }
 
+
+.button {
+  transition: all 0.3s;
+  cursor: pointer;
+}
+
+.button:hover {
+  color: rgba(130, 170, 255);
+}
 </style>

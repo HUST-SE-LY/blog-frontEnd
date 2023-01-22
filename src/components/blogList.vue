@@ -7,7 +7,7 @@
       <p class="button" @click="nextPage">下一页</p>
     </div>
   </div>
-  <toast v-if="showToast">{{toastInfo}}</toast>
+  <toast v-if="showToast">{{ toastInfo }}</toast>
 
 </template>
 
@@ -17,25 +17,58 @@ import singleBlog from './singleBlog.vue';
 import useAxios from '../composables/useAxios';
 import { onMounted, ref, watch } from 'vue';
 import toast from './toast.vue'
+import { useStore } from 'vuex';
+const store = useStore()
 const isLoading = ref(false);
 const axios = useAxios();
 const blogList = ref([]);
 const limit = 4;
 const offset = ref(0);
 const showToast = ref(false);
-const toastInfo = ref("")
+const toastInfo = ref("");
+const searchMode = ref('time');
 
-onMounted(async () => {
+watch(() => store.state.tag, async (newVal) => {
+  blogList.value = [];
+  offset.value = 0;
+  if (newVal) {
+    searchByTag();
+  } else {
+    searchByTime();
+  }
+})
+
+async function searchByTime() {
   const result = await axios.post('/get/blog', {
     limit: limit,
     offset: offset.value,
   })
   blogList.value = result.data.blogs;
   offset.value += result.data.blogs.length;
+}
+
+async function searchByTag() {
+  const result = await axios.post('/get/blogByTag', {
+    limit: limit,
+    offset: offset.value,
+    tag: store.state.tag,
+  })
+  console.log(result)
+  blogList.value = result.data.blogs;
+  offset.value += result.data.blogs.length;
+}
+
+onMounted(async () => {
+  if (store.state.tag) {
+    searchByTag()
+  } else {
+    searchByTime();
+  }
+
 })
 
-watch(showToast,(newVal) => {
-  if(newVal) {
+watch(showToast, (newVal) => {
+  if (newVal) {
     setTimeout(() => {
       showToast.value = false;
     }, 5000)
@@ -45,7 +78,7 @@ watch(showToast,(newVal) => {
 async function lastPage() {
   if (offset.value <= limit) {
     toastInfo.value = "已经是首页了哦"
-    showToast.value = true; 
+    showToast.value = true;
     return;
   }
   offset.value -= (limit + blogList.value.length);
@@ -58,7 +91,7 @@ async function lastPage() {
 }
 
 async function nextPage() {
-  if(isLoading.value) return;
+  if (isLoading.value) return;
   isLoading.value = true;
   const result = await axios.post('/get/blog', {
     limit: limit,
@@ -69,7 +102,7 @@ async function nextPage() {
     offset.value += result.data.blogs.length;
   } else {
     toastInfo.value = "已经是最后一页了哦"
-    showToast.value = true; 
+    showToast.value = true;
   }
   isLoading.value = false;
 }
