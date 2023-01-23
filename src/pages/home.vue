@@ -13,25 +13,50 @@
     <img src="../assets/homeBack.jpg" alt="background" class="back_pic pic">
     <div class="home_main" id="main" ref="main">
       <canvas id="main_canvas" ref="mainCanvas"></canvas>
-      <tagList></tagList>
-      <blogList></blogList>
+      <div class="left">
+        <tagList></tagList>
+        <searchBar></searchBar>
+      </div>
+      <blogList class="blog_list"></blogList>
       <div class="right_container">
+        <div class="left_1200px">
+          <tagList></tagList>
+          <searchBar></searchBar>
+        </div>
         <self></self>
         <linkList></linkList>
         <music></music>
       </div>
     </div>
   </div>
+  <div class="aside">
+    <div class="aside_single" :class="tagShow?'show':''">
+      <div class="aside_pull" @click="tagShow=tagShow?false:true">tag</div>
+      <tagList class="aside_main"></tagList>
+    </div>
+    <div class="aside_single" :class="searchShow?'show':''">
+      <div class="aside_pull" @click="searchShow=searchShow?false:true">搜索</div>
+      <searchBar class="aside_main"></searchBar>
+    </div>
+    <div class="aside_single" :class="selfShow?'show':''">
+      <div class="aside_pull" @click="selfShow=selfShow?false:true">个人</div>
+      <self class="aside_main"></self>
+    </div>
+    <div class="aside_single" :class="linkShow?'show':''">
+      <div class="aside_pull" @click="linkShow=linkShow?false:true">网站</div>
+      <linkList class="aside_main"></linkList>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import { nextTick, onMounted, ref } from 'vue';
-import headTag from '../components/headTag.vue';
 import typing from '../components/typing.vue';
 import tagList from '../components/tagList.vue';
 import blogList from '../components/blogList.vue';
 import self from '../components/self.vue';
 import linkList from '../components/linkList.vue';
+import searchBar from '../components/searchBar.vue';
 import music from '../components/music.vue';
 import login from '../components/login.vue';
 import { useStore } from 'vuex';
@@ -42,12 +67,16 @@ const store = useStore();
 const mainCanvas = ref(null);
 const main = ref(null)
 const width = ref("");
-const height = ref("")
+const height = ref("");
+const tagShow = ref(false);
+const selfShow = ref(false);
+const linkShow = ref(false);
+const searchShow = ref(false);
 
-onBeforeRouteLeave((to,from,next) => {
-  if(to.path === '/back') {
-    
-    if(store.state.isLogin) {
+
+onBeforeRouteLeave((to, from, next) => {
+  if (to.path === '/back') {
+    if (store.state.isLogin) {
       next()
     } else {
       store.commit('showLogin')
@@ -62,10 +91,6 @@ const isShowLogin = computed(() => store.state.showLoginBox);
 function initCanvas() {
   mainCanvas.value.width = main.value.offsetWidth;
   mainCanvas.value.height = main.value.offsetHeight;
-}
-
-onMounted(() => {
-  initCanvas();
   bubbly({
     colorStart: "#ffffff",
     colorStop: "#ffffff",
@@ -75,6 +100,10 @@ onMounted(() => {
     bubbleFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`,
     canvas: document.getElementById("main_canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
   });
+}
+
+onMounted(() => {
+  initCanvas();
   window.addEventListener('resize', () => {
     initCanvas();
   })
@@ -96,17 +125,20 @@ onMounted(() => {
 
 }
 
-.login-enter-from,.login-leave-to {
+.login-enter-from,
+.login-leave-to {
   opacity: 0;
   transform: translateY(10px);
 }
 
-.login-enter-to, .login-leave-from {
+.login-enter-to,
+.login-leave-from {
   opacity: 1;
   transform: translateY(0);
 }
 
-.login-enter-active, .login-leave-active {
+.login-enter-active,
+.login-leave-active {
   transition: all 0.3s;
 }
 
@@ -116,6 +148,7 @@ onMounted(() => {
   position: relative;
   background-color: white;
 }
+
 
 .home_container::-webkit-scrollbar {
   display: none;
@@ -148,18 +181,17 @@ onMounted(() => {
 }
 
 .home_main {
-  height: 90vh;
+  height: 92vh;
   position: relative;
   width: 100%;
   background: white;
   z-index: 1000;
   box-sizing: border-box;
-  min-height: 800px;
   display: grid;
-  grid-template-columns: 1fr 4fr 2fr;
+  grid-template-columns: 1fr 2fr 1fr;
   padding: 50px;
   gap: 50px;
-  box-shadow: 0 0 20px rgba(0,0,0,0.2);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
 
 .home_main::-webkit-scrollbar {
@@ -178,7 +210,7 @@ onMounted(() => {
 .title {
   width: 100%;
   text-align: center;
-  background: linear-gradient(to right,rgb(95, 142, 244)  50%, white, white);
+  background: linear-gradient(to right, rgb(95, 142, 244) 50%, white, white);
   background-size: 300%;
   background-position: 90%;
   -webkit-background-clip: text;
@@ -190,6 +222,10 @@ onMounted(() => {
   transition: all 1s;
   letter-spacing: 2px;
   animation: movein 0.75s ease-out forwards;
+}
+
+.aside {
+  display: none;
 }
 
 .title:hover {
@@ -208,4 +244,92 @@ onMounted(() => {
   font-size: 24px;
   z-index: 1;
 }
+
+.left_1200px {
+  display: none;
+}
+
+@media screen and (max-width: 1400px) {
+  .left {
+    display: none;
+  }
+
+  .home_main {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .left_1200px {
+    display: block;
+  }
+
+  .right_container {
+    overflow-y: scroll;
+    padding: 20px;
+  }
+
+  .center_container {
+    padding-top: 20px;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  .home_main {
+    grid-template-columns: 1fr;
+  }
+
+  .left_1200px {
+    display: none;
+  }
+
+  .right_container {
+    display: none;
+  }
+
+  .aside {
+    display: block;
+    position: fixed;
+    top: 10%;
+    z-index: 100000;
+    right: -290px;
+
+  }
+
+  .aside_single {
+    display: flex;
+    align-items: center;
+    transition: all 0.3s;
+  }
+
+  .aside_pull {
+    width: 50px;
+    border-radius: 15px 0 0 15px;
+    height: 30px;
+    background-color: white;
+    line-height: 30px;
+    text-align: right;
+    box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+    padding-right: 5px;
+    cursor: pointer;
+  }
+
+  .aside_main {
+    width: 250px;
+  }
+
+  .aside_main:hover {
+    scale: 1;
+  }
+
+  .show {
+    transform: translateX(-290px);
+  }
+}
+
+@media screen and (max-height:900px) {
+  .home_main {
+    height: 90vh;
+    min-height: none;
+  }
+}
+
 </style>

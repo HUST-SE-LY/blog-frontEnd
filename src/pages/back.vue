@@ -1,28 +1,30 @@
 <template>
   <div ref="container" class="back_container">
     <canvas ref="mainCanvas" class="canvas" id="main_canvas"></canvas>
-    <div class="left">
+    <div class="left" v-if="store.state.isLogin">
       <setSelf></setSelf>
       <music class="music"></music>
     </div>
-    <div class="center">
+    <div class="center" v-if="store.state.isLogin">
       <chart></chart>
       <div class="center_bottom">
         <uploadBlog></uploadBlog>
         <manageBlog></manageBlog>
       </div>
     </div>
-    <div class="right">
+    <div class="right" v-if="store.state.isLogin">
       <setTag></setTag>
       <setLink></setLink>
     </div>
   </div>
+  <login v-if="!store.state.isLogin"></login>
   <l2d></l2d>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted } from 'vue';
 import setSelf from '../components/setSelf.vue';
+import login from '../components/login.vue';
 import music from '../components/music.vue';
 import chart from '../components/chart.vue';
 import setTag from '../components/setTag.vue';
@@ -30,10 +32,12 @@ import setLink from '../components/setLink.vue';
 import uploadBlog from '../components/uploadBlog.vue';
 import manageBlog from '../components/manageBlog.vue';
 import l2d from '../components/l2d.vue';
-import { useRoute } from 'vue-router';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
 const container = ref(null);
 const mainCanvas = ref(null);
-const route = useRoute();
+const router = useRouter();
+const store = useStore();
 
 function initCanvas() {
   mainCanvas.value.width = container.value.offsetWidth;
@@ -48,6 +52,7 @@ function initCanvas() {
     canvas: mainCanvas.value, // default is created and attached// default is 4 + Math.random() * width / 25
   });
 }
+
 
 onMounted(() => {
   initCanvas();
@@ -78,6 +83,14 @@ onMounted(() => {
     opacity: 1;
     transform: translateY(0px);
   }
+}
+
+.noLogin {
+  padding: 50px 100px;
+  width: fit-content;
+  border-radius: 25px;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  margin: 200px auto;
 }
 .back_container {
   width: 100%;

@@ -22,6 +22,7 @@ function chooseTag(name) {
   if (store.state.tag === name) {
     store.commit("deleteTag");
   } else {
+    store.commit('cancelSearch');
     store.commit('changeTag', { tag: name })
   }
 }

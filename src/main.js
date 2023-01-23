@@ -13,6 +13,7 @@ const store = createStore({
       isLogin: false,
       showLoginBox: false,
       tag: null,
+      searchWord: null,
     }
   },
   mutations: {
@@ -25,11 +26,20 @@ const store = createStore({
     closeLogin(state) {
       state.showLoginBox = false;
     },
+    logout(state) {
+      state.isLogin = false;
+    },
     changeTag(state, payLoad) {
       state.tag = payLoad.tag;
     },
     deleteTag(state) {
       state.tag = null;
+    },
+    cancelSearch(state) {
+      state.searchWord = null;
+    },
+    startSearch(state,payLoad) {
+      state.searchWord = payLoad.title;
     }
   }
 })

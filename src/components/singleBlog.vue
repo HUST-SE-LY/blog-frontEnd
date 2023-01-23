@@ -53,7 +53,7 @@ async function intoDetail() {
 .single_blog_container {
   display: flex;
   align-items: center;
-  margin-bottom: 40px;
+  margin-bottom: 120px;
   animation: movein 0.3s ease-out forwards;
 }
 
@@ -112,4 +112,42 @@ async function intoDetail() {
   color: lightgray;
   font-size: 14px;
 }
+
+@media screen and (max-width: 1200px) {
+  .content {
+    width: 300px;
+  }
+}
+
+
+@media screen and (max-height: 1440px) {
+  .single_blog_container {
+    margin-bottom: 100px;
+  }
+}
+
+@media screen and (max-height: 1280px) {
+  .single_blog_container {
+    margin-bottom: 80px;
+  }
+}
+
+@media screen and (max-height: 1100px) {
+  .single_blog_container {
+    margin-bottom: 40px;
+  }
+}
+
+@media screen and (max-height: 900px) {
+  .single_blog_container {
+    margin-bottom: 20px;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .single_blog_container {
+    margin-bottom: 10px;
+  }
+}
+
 </style>

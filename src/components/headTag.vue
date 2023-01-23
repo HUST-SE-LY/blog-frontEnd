@@ -35,8 +35,8 @@ watch(() => routes.path,(newVal) => {
 <style scoped>
 
 .avatar {
-  width: 40px;
-  height: 40px;
+  width: 30px;
+  height: 30px;
   background-image: url(../assets/avatar.png);
   border-radius: 20px;
   background-size: cover;

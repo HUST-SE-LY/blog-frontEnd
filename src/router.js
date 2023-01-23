@@ -1,8 +1,12 @@
 import { createRouter, createWebHistory } from "vue-router";
 
-import home from './pages/home.vue'
-import blog from './pages/blog.vue'
-import back from './pages/back.vue'
+// import home from './pages/home.vue'
+// import blog from './pages/blog.vue'
+// import back from './pages/back.vue'
+
+const home = () => {return import('./pages/home.vue')};
+const blog = () => {return import('./pages/blog.vue')};
+const back = () => {return import('./pages/back.vue')};
 
 const routes = [
   {

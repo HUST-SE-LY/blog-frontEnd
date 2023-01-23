@@ -2,7 +2,7 @@
   <div class="link_list_container">
     <titleHead>常用网址</titleHead>
     <div class="link_box">
-      <a v-for="link in linkList" :href="link.url">{{link.name}}</a>
+      <a v-for="link in linkList" :href="link.url" target="_blank">{{link.name}}</a>
     </div>
   </div>
 </template>

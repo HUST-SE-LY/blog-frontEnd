@@ -1,4 +1,5 @@
 <template>
+  <login v-if="store.state.showLoginBox"></login>
   <div class="loading"></div>
   <canvas ref="mainCanvas" class="canvas"></canvas>
   <div class="container" ref="container">
@@ -8,7 +9,7 @@
     </div>
     <div class="right">
       <titleHead>目录</titleHead>
-      <a target="" v-for="title in menu" :href="`#${title.value}`" :class="title.style">{{ title.value }}</a>
+      <a target="" v-for="title in menu" :href="`#${title.id}`" :class="title.style">{{ title.value }}</a>
     </div>
   </div>
   <l2d></l2d>
@@ -16,12 +17,14 @@
 
 <script setup>
 import { nextTick, onMounted, ref } from 'vue';
-import { useRoute } from 'vue-router';
+import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import l2d from '../components/l2d.vue'
 import useAxios from '../composables/useAxios';
 import titleHead from '../components/titleHead.vue';
+import login from '../components/login.vue';
+import { useStore } from 'vuex';
 
-
+const store = useStore();
 const axios = useAxios();
 const routes = useRoute()
 const content = ref("");
@@ -60,7 +63,8 @@ function createTree(doms) {
     if (tags.includes(doms[i].tagName)) {
       menu.value.push({
         value: doms[i].innerText,
-        style: doms[i].tagName
+        style: doms[i].tagName,
+        id: doms[i].id,
       })
     }
   }
@@ -78,6 +82,19 @@ function changeLoading(e) {
   loadingWidth.value = width + "%"
 }
 
+
+
+onBeforeRouteLeave((to,from,next) => {
+  if(to.path === '/back') {
+    if(store.state.isLogin) {
+      next()
+    } else {
+      store.commit('showLogin')
+    }
+  } else {
+    next();
+  }
+})
 
 </script>
 

@@ -9,16 +9,20 @@
 
 <script setup>
 import { onMounted } from 'vue';
-import chart from './components/chart.vue';
-import l2d from './components/l2d.vue';
-import music from './components/music.vue';
 import useAxios from './composables/useAxios';
 import headTag from './components/headTag.vue';
-import login from './components/login.vue';
+import { useStore } from 'vuex';
+
 const axios = useAxios();
+const store = useStore();
 
 onMounted(async () => {
-
+  try {
+    await axios.post('/check')
+    store.commit('login')
+  } catch(e) {
+    store.commit("logout")
+  }
 })
 </script>
 

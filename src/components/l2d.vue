@@ -37,5 +37,17 @@ onMounted(() => {
   }  
 }
 
+@media screen and (max-height: 1000px){
+  .live2d {
+    width: 200px;
+  }  
+}
+
+@media screen and (max-width: 800px){
+  .live2d {
+    width: 150px;
+  }  
+}
+
 
 </style>
