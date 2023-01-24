@@ -166,6 +166,10 @@ async function intoDetail() {
     width: 100%;
   }
 
+  .tag_box {
+    min-width: 300px;
+  }
+
 
 
 }
