@@ -95,6 +95,7 @@ async function intoDetail() {
   align-items: center;
   gap: 50px;
   padding-bottom: 10px;
+  width: 100%;
 }
 
 .tag_box {
@@ -135,6 +136,11 @@ async function intoDetail() {
     width: 200px;
     box-sizing: border-box;
   }
+  
+  .home_pic {
+    width: 140px;
+    height: 80px;
+  }
 
 }
 
@@ -152,21 +158,21 @@ async function intoDetail() {
     box-sizing: border-box;
   }
 
-  .home_pic {
-    width: 140px;
-    height: 80px;
+  .right {
+    display: none;
   }
 
-  .tag_box {
-    width: 150px;
+  .left {
+    width: 100%;
   }
+
+
 
 }
 
 @media screen and (max-width: 450px) {
-  .home_pic {
-    width: 105px;
-    height: 60px;
+  .right {
+    display: none;
   }
 
   .date {
