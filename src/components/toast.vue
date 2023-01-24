@@ -31,6 +31,7 @@
   background-color: white;
   width: 200px;
   padding: 10px 30px;
+  box-sizing: border-box;
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0,0,0,0.1);
   position: fixed;

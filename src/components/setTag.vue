@@ -25,15 +25,16 @@ const tagName = ref("");
 
 async function addTag() {
   if(!tagName.value) return;
-  const result = axios.post("/set/tag",{
+  const result =await axios.post("/set/tag",{
     name:tagName.value,
   })
   tagName.value = "";
-  freshTag()
+  await freshTag();
 }
 
 async function freshTag() {
   const result = await axios.post('/get/tag');
+  console.log(result.data.tags)
   tagList.value = result.data.tags;
 }
 

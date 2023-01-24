@@ -106,4 +106,27 @@ watch(() => routes.path,(newVal) => {
 .button:hover {
   color: rgba(130, 170, 255);
 }
+
+@media screen and (max-width:700px) {
+  .head_container {
+    gap: 50px;
+    padding: 0 100px 0 100px;
+  }
+  .link {
+    font-size: 14px;
+  }
+
+  
+}
+
+@media screen and (max-width: 600px) {
+  .head_container {
+    gap: 25px;
+    padding: 0 50px 0 50px;
+  }
+
+  .link {
+    font-size: 12px;
+  }
+}
 </style>

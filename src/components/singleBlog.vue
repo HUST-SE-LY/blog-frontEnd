@@ -119,6 +119,45 @@ async function intoDetail() {
   }
 }
 
+@media screen and (max-width: 650px) {
+  .title {
+    font-size: 16px;
+  }
+
+  .bottom {
+    gap: 10px;
+  }
+
+  .content {
+    width: 200px;
+    box-sizing: border-box;
+  }
+
+}
+
+@media screen and (max-width: 550px) {
+  .title {
+    font-size: 16px;
+  }
+
+  .bottom {
+    gap: 10px;
+  }
+
+  .content {
+    width: 100px;
+    box-sizing: border-box;
+  }
+
+  .home_pic {
+    width: 140px;
+    height: 80px;
+  }
+
+}
+
+
+
 
 @media screen and (max-height: 1440px) {
   .single_blog_container {

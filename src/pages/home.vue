@@ -272,7 +272,7 @@ onMounted(() => {
   }
 }
 
-@media screen and (max-width: 1100px) {
+@media screen and (max-width: 1000px) {
   .home_main {
     grid-template-columns: 1fr;
   }
@@ -329,6 +329,27 @@ onMounted(() => {
   .home_main {
     height: 90vh;
     min-height: none;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .title {
+    font-size: 20px;
+  }
+
+  .sub_title {
+    font-size: 16px;
+  }
+
+  .head_title {
+    font-size: 16px;
+    top: 5%;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .home_main {
+    padding: 20px;
   }
 }
 

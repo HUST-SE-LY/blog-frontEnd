@@ -337,4 +337,10 @@ a:hover {
   font-size: 16px;
   line-height: 50px;
 }
+
+@media screen and (max-width:800px) {
+  .right {
+    display: none;
+  }
+}
 </style>
