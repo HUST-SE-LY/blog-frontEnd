@@ -93,7 +93,7 @@ async function intoDetail() {
 .bottom {
   display: flex;
   align-items: center;
-  gap: 50px;
+  gap: 20px;
   padding-bottom: 10px;
   width: 100%;
 }
@@ -118,6 +118,13 @@ async function intoDetail() {
 @media screen and (max-width: 1200px) {
   .content {
     width: 300px;
+  }
+
+  .date {
+    color: lightgray;
+    font-size: 14px;
+    width: 6em;
+    white-space: nowrap;
   }
 }
 
