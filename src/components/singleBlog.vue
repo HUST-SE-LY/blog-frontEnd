@@ -168,6 +168,7 @@ async function intoDetail() {
 
   .tag_box {
     width: fit-content;
+    min-width: 200px;
     max-width: 100%;
   }
 
@@ -182,6 +183,10 @@ async function intoDetail() {
 
   .date {
     font-size: 12px;
+  }
+
+  .tag_box {
+    min-width: 100px;
   }
 }
 
