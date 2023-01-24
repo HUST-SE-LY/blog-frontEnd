@@ -20,6 +20,7 @@
   transition: all 0.3s;
   color: rgba(130, 170, 255,.75);
   cursor: pointer;
+  white-space: nowrap;
  }
  .tag:hover {
   border: 1.5px solid rgba(130, 170, 255,.75);
