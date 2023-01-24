@@ -8,7 +8,7 @@
 import { onMounted } from 'vue';
 
 onMounted(() => {
-  loadlive2d("live2d", "../public/live2d/model/xiaomai/xiaomai.model.json");
+  loadlive2d("live2d", "/live2d/model/xiaomai/xiaomai.model.json");
 })
 
 </script>
