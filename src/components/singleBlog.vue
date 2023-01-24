@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="right">
-      <img :src="`http://127.0.0.1:6324/picture/${props.blogInfo.picture}`" alt="" class="home_pic">
+      <img :src="`http://150.158.43.171:8088/picture/${props.blogInfo.picture}`" alt="" class="home_pic">
     </div>
 
   </div>
