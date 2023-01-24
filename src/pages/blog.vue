@@ -338,6 +338,18 @@ a:hover {
   line-height: 50px;
 }
 
+.main:deep(img) {
+  display: block;
+  width: 100%;
+  margin: 20px auto;
+  border-radius: 25px;
+  transition: all 0.3s;
+}
+
+.main:deep(img):hover {
+  border-radius: 0px;
+}
+
 @media screen and (max-width:800px) {
 
   .right {
