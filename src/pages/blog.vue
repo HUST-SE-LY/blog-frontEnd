@@ -339,8 +339,13 @@ a:hover {
 }
 
 @media screen and (max-width:800px) {
+
   .right {
     display: none;
+  }
+  
+  .container {
+    grid-template-columns: 1fr;
   }
 }
 </style>
