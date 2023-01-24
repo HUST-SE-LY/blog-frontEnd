@@ -167,7 +167,8 @@ async function intoDetail() {
   }
 
   .tag_box {
-    min-width: 300px;
+    width: fit-content;
+    max-width: 100%;
   }
 
 
