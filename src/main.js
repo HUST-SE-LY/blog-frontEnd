@@ -2,8 +2,8 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import router from './router'
-import Highlight from './plugin/highlight/highlight'; 
-import persistState from './plugin/vuex/persist';
+import Highlight from './assets/plugin/highlight/highlight'; 
+import persistState from './assets/plugin/vuex/persist';
 import { createStore } from 'vuex';
 
 const store = createStore({

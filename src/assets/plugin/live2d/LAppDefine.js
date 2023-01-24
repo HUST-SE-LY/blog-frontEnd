@@ -14,7 +14,7 @@ var LAppDefine = {
         自定义配置模型，同一数组内放置同个模型的不同皮肤，换肤时按照顺序依次显示
         这里请用相对路径配置
      */
-  MODELS: [["model/xiaomai/xiaomai.model.json"]],
+  MODELS: [["./model/xiaomai/xiaomai.model.json"]],
 };
 
 this.canvas = document.getElementById(LAppDefine.CANVAS_ID);
