@@ -111,6 +111,7 @@ async function intoDetail() {
 .date {
   color: lightgray;
   font-size: 14px;
+  width: 6em;
 }
 
 @media screen and (max-width: 1200px) {
@@ -154,8 +155,22 @@ async function intoDetail() {
     height: 80px;
   }
 
+  .tag_box {
+    width: 150px;
+  }
+
 }
 
+@media screen and (max-width: 450px) {
+  .home_pic {
+    width: 105px;
+    height: 60px;
+  }
+
+  .date {
+    font-size: 12px;
+  }
+}
 
 
 
@@ -186,6 +201,10 @@ async function intoDetail() {
 @media screen and (max-height: 800px) {
   .single_blog_container {
     margin-bottom: 10px;
+  }
+
+  .tag_box {
+    width: 100px;
   }
 }
 
