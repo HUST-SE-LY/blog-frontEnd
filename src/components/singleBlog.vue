@@ -102,9 +102,7 @@ async function intoDetail() {
   display: flex;
   width: 100%;
   gap: 10px;
-  overflow-x: scroll;
   flex-wrap: nowrap;
-
 }
 
 .tag_box::-webkit-scrollbar {
