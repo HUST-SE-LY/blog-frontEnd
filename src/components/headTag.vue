@@ -5,6 +5,7 @@
     <div class="right">
       <div class="button" v-if="!isLogin" @click="store.commit('showLogin')">登录</div>
       <div class="avatar" v-else></div>
+      <router-link to="/about" class="link">关于</router-link>
     </div>   
   </div>
 </template>
@@ -116,7 +117,11 @@ watch(() => routes.path,(newVal) => {
     font-size: 14px;
   }
 
-  
+  .button {
+    font-size: 14px;
+  }
+
+
 }
 
 @media screen and (max-width: 600px) {
@@ -126,6 +131,10 @@ watch(() => routes.path,(newVal) => {
   }
 
   .link {
+    font-size: 12px;
+  }
+
+  .button {
     font-size: 12px;
   }
 }

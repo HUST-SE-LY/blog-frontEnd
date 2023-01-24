@@ -7,6 +7,7 @@ import { createRouter, createWebHistory } from "vue-router";
 const home = () => {return import('./pages/home.vue')};
 const blog = () => {return import('./pages/blog.vue')};
 const back = () => {return import('./pages/back.vue')};
+const about = () => {return import('./pages/about.vue')};
 
 const routes = [
   {
@@ -32,6 +33,12 @@ const routes = [
     component: back,
     meta: {
       title: '这里是后台喵'
+    }
+  },{
+    path:'/about',
+    component: about,
+    meta: {
+      title: '关于本站'
     }
   }
 ]
