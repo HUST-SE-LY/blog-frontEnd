@@ -1,6 +1,6 @@
 <template>
   <div ref="container" class="container">
-    <canvas ref="mainCanvas"></canvas>
+    <canvas ref="mainCanvas" id="main_canvas"></canvas>
     <div class="box">
       <h1>技术栈</h1>
       <div class="link_box">
