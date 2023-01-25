@@ -145,13 +145,17 @@ onMounted(() => {
 .home_container {
   height: 100vh;
   overflow-y: scroll;
-  position: relative;
-  background-color: white;
+  background-color: transparent;
 }
 
 
 .home_container::-webkit-scrollbar {
-  display: none;
+  width: 10px;
+  background: lightgray;
+}
+
+.home_container::-webkit-scrollbar-thumb {
+  background: rgba(130, 170, 255);
 }
 
 #main_canvas {
@@ -167,7 +171,7 @@ onMounted(() => {
   height: fit-content;
   position: fixed;
   top: 0;
-
+  z-index: -1;
 
 }
 
@@ -183,7 +187,6 @@ onMounted(() => {
 .home_main {
   height: 92vh;
   position: relative;
-  width: 100%;
   background: white;
   z-index: 1000;
   box-sizing: border-box;
