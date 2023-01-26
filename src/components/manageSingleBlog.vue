@@ -28,6 +28,7 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
 import useAxios from '../composables/useAxios';
 import singleTag from './singleTag.vue';
 const props = defineProps(['blogInfo']);
@@ -43,6 +44,7 @@ const des = ref(props.blogInfo.des);
 const isUpdating = ref(false);
 const isTagging = ref(false);
 const tagName = ref("");
+const store = useStore();
 
 async function changeState() {
   if (isUpdating.value) {
@@ -154,6 +156,8 @@ input {
   width: 300px;
   padding-bottom: 3px;
   margin-bottom: 5px;
+  background-color: transparent;
+  color: v-bind(store.state.darkMode?'#ffffff':'#000000');
 }
 
 .update {

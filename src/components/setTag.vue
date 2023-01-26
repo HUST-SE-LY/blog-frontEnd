@@ -1,5 +1,5 @@
 <template>
-  <div class="set_tag_container">
+  <div :class="`set_tag_container ${store.state.darkMode?'dark_background':''}`">
     <titleHead>编辑常用标签</titleHead>
     <div class="tag_box">
       <singleTag v-for="tag in tagList" :key="tag.id" @click="deleteTag(tag.id)">{{tag.name}}</singleTag>
@@ -17,7 +17,9 @@ import titleHead from './titleHead.vue';
 import useAxios from '../composables/useAxios';
 import singleTag from './singleTag.vue';
 import { onMounted,ref } from 'vue';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const axios = useAxios();
 const tagList = ref([]);
 const isFocus = ref(false);
@@ -105,6 +107,8 @@ input {
   height: 24px;
   transition: all 0.3s;
   font-size: 14px;
+  background-color: transparent;
+  color: v-bind(store.state.darkMode?'white':'black');
 }
 
 p {

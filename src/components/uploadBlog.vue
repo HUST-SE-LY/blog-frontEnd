@@ -1,5 +1,5 @@
 <template>
-  <div class="upload_blog_container">
+  <div :class="`upload_blog_container ${store.state.darkMode?'dark_background':''}`">
     <titleHead>上传博客</titleHead>
     <loading v-if="isLoading"></loading>
     <div class="not_loading" v-else>
@@ -38,6 +38,7 @@ import titleHead from './titleHead.vue';
 import singleTag from './singleTag.vue';
 import useAxios from '../composables/useAxios';
 import loading from './loading.vue';
+import { useStore } from 'vuex';
 const emit = defineEmits("expired")
 const axios = useAxios();
 const isTitleFocus = ref(false);
@@ -52,6 +53,7 @@ const isTagging = ref(false);
 const blogChooseState = ref("选择博客文件");
 const pictureChooseState = ref("选择封面图");
 const isLoading = ref(false)
+const store = useStore()
 
 function addTag() {
   if (tagName.value) {
@@ -134,6 +136,8 @@ input {
   height: 24px;
   transition: all 0.3s;
   font-size: 14px;
+  background-color: transparent;
+  color: v-bind(store.state.darkMode?'white':'black');
 }
 
 p {

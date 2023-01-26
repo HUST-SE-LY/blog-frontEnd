@@ -1,5 +1,5 @@
 <template>
-  <div class="set_self_container">
+  <div :class="`set_self_container ${store.state.darkMode?'dark_background':''}`">
     <titleHead>编辑个人资料</titleHead>
     <div class="input_box">
       <p :class="nameIsFocus?'p_focus':(username?'':'p_origin')">昵称</p>
@@ -21,6 +21,8 @@
 import { onMounted, ref } from 'vue';
 import titleHead from './titleHead.vue';
 import useAxios from '../composables/useAxios';
+import { useStore } from 'vuex';
+const store = useStore()
 const axios = useAxios();
 const username = ref("");
 const title = ref("");
@@ -75,6 +77,8 @@ input {
   height: 24px;
   transition: all 0.3s;
   font-size: 14px;
+  background-color: transparent;
+  color: v-bind(store.state.darkMode?'white':'black');
 }
 
 p {

@@ -1,5 +1,5 @@
 <template>
-  <div class="set_link_container">
+  <div :class="`set_link_container ${store.state.darkMode?'dark_background':''}`">
     <titleHead>编辑常用网址</titleHead>
     <div class="link_box">
       <div class="a" v-for="link in linkList" :href="link.url" :key="link.id" @click="deleteLink(link.id)">{{link.name}}</div>
@@ -20,7 +20,9 @@
 import { onMounted, ref } from 'vue';
 import titleHead from './titleHead.vue';
 import useAxios from '../composables/useAxios';
+import { useStore } from 'vuex';
 
+const store = useStore();
 const axios = useAxios();
 const isNameFocus = ref(false);
 const isUrlFocus = ref(false);
@@ -84,11 +86,13 @@ async function addLink() {
 input {
   width: 80%;
   border: none;
+  color: v-bind(store.state.darkMode?'#ffffff':'#000000');
   border-bottom: 1px solid gray;
   outline: none;
   height: 24px;
   transition: all 0.3s;
   font-size: 14px;
+  background-color: transparent;
 }
 
 .link_box {
@@ -99,7 +103,7 @@ input {
 
 .a {
   text-decoration: none;
-  color: black;
+  color: v-bind(store.state.darkMode?'#ffffff':'#000000');
   padding: 5px 20px;
   transition: all 0.3s;
   border-radius: 20px;

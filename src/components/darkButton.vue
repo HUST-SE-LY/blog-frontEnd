@@ -1,6 +1,6 @@
 <template>
   <div class="ball_container" @click="move">
-    <div :class="ball"></div>
+    <div :class="ball"><img src="../assets/dark.svg" alt="夜间模式"></div>
     <div :class="color_box"></div>
   </div>
 </template>
@@ -59,6 +59,7 @@ function move() {
   left: 0;
   z-index: 1;
   cursor: pointer;
+  position: relative;
 }
 
 .ball_forword {
@@ -86,5 +87,13 @@ function move() {
   top: 0;
   left: 0;
   z-index: 0;
+}
+
+img {
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  top: 1px;
+  left: 2px;
 }
 </style>

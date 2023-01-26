@@ -58,6 +58,7 @@ input {
   height: 24px;
   transition: all 0.3s;
   font-size: 14px;
+  color: v-bind(store.state.darkMode?'white':'black');
 }
 
 p {

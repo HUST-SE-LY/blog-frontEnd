@@ -94,6 +94,7 @@ onMounted(() => {
   padding: 100px 50px;
   gap: 20px;
   overflow: hidden;
+  background-color: v-bind(store.state.darkMode?'#000000':'#ffffff');
 }
 
 .music:hover {
@@ -105,7 +106,7 @@ onMounted(() => {
   width: 100%;
   top: 0;
   left: 0;
-  z-index: -100;
+  z-index: 0;
 }
 
 .center_bottom {

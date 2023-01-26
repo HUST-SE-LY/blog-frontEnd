@@ -1,5 +1,5 @@
 <template>
-  <div class="manage_blog_container" @scroll="fresh" >
+  <div :class="`manage_blog_container ${store.state.darkMode?'dark_background':''}`" @scroll="fresh" >
     <titleHead>管理博客</titleHead>
     <manageSingleBlog v-for="(blog,index) in blogList" :key="blog.id" :blog-info="blog" @delete="deleteFromList(index)" ></manageSingleBlog>
   </div>
@@ -11,6 +11,7 @@ import manageSingleBlog from './manageSingleBlog.vue';
 import useAxios from '../composables/useAxios';
 import useBottomFresh from '../composables/useBottomFresh';
 import { onMounted,ref } from 'vue';
+import { useStore } from 'vuex';
 const bottomFresh = useBottomFresh();
 const axios = useAxios();
 const blogList = ref([]);
@@ -18,6 +19,7 @@ const limit = 30;
 const offset = ref(0);
 const isBottom = ref(false);
 const isLoading = ref(false);
+const store = useStore()
 
 onMounted(async () => {
   const result = await axios.post("/get/blog",{

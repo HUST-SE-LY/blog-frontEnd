@@ -1,5 +1,5 @@
 <template>
-  <div class="calendar_box">
+  <div :class="`calendar_box ${store.state.darkMode ? 'dark_background' : ''}`">
     <div id="calendar"></div>
   </div>
 
@@ -8,41 +8,50 @@
 <script setup>
 import * as echarts from 'echarts';
 import useAxios from '../composables/useAxios';
-import { onMounted, ref } from 'vue';
-async function getData(year) {
-    console.log(new Date())
-    const date = +echarts.time.parse(year + '-01-01');
-    const end = +echarts.time.parse(+year + 1 + '-01-01');
-    const dayTime = 3600 * 24 * 1000;
-    const data = [];
-    const result = await axios.post('/get/allDate');
-    console.log(result)
-    const dateArray = result.data.dates;
-    for (let time = date; time < end; time += dayTime) {   
-      let num = 0;
-      const currentTime = echarts.time.format(time, '{yyyy}-{MM}-{dd}', false)
-      for(let i = 0; i < dateArray.length; i++) {
-        if(currentTime === dateArray[i].date.split("T")[0]) {
-          num++;
-        }
-      }  
-      data.push([
-        echarts.time.format(time, '{yyyy}-{MM}-{dd}', false),
-        num,
-      ]);
-    }
+import { onMounted, ref, watch } from 'vue';
+import { useStore } from 'vuex';
+import { parserOptions } from '@vue/compiler-dom';
+const store = useStore();
 
-    return data;
+let chart;
+let option;
+let calendar;
+
+
+async function getData(year) {
+  console.log(new Date())
+  const date = +echarts.time.parse(year + '-01-01');
+  const end = +echarts.time.parse(+year + 1 + '-01-01');
+  const dayTime = 3600 * 24 * 1000;
+  const data = [];
+  const result = await axios.post('/get/allDate');
+  const dateArray = result.data.dates;
+  for (let time = date; time < end; time += dayTime) {
+    let num = 0;
+    const currentTime = echarts.time.format(time, '{yyyy}-{MM}-{dd}', false)
+    for (let i = 0; i < dateArray.length; i++) {
+      if (currentTime === dateArray[i].date.split("T")[0]) {
+        num++;
+      }
+    }
+    data.push([
+      echarts.time.format(time, '{yyyy}-{MM}-{dd}', false),
+      num,
+    ]);
   }
+
+  return data;
+}
 
 const axios = useAxios();
 
 onMounted(async () => {
-  const calendar = document.getElementById('calendar');
-  const chart = echarts.init(calendar);
+  calendar = document.getElementById('calendar');
+  chart = echarts.init(calendar, store.state.darkMode ? 'dark' : 'light');
   const year = new Date().getFullYear();
   const data = await getData(year);
-  const option = {
+  option = {
+    backgroundColor: store.state.darkMode ? '#1a1a1a' : '#ffffff',
     title: {
       top: 0,
       left: 'center',
@@ -77,11 +86,19 @@ onMounted(async () => {
     }
   }
   chart.setOption(option);
-
-  window.addEventListener('resize',() => {
+  window.addEventListener('resize', () => {
     chart.resize()
   })
 })
+
+watch(() => store.state.darkMode, () => {
+  chart.dispose()
+  option.backgroundColor = store.state.darkMode ? '#1a1a1a' : '#ffffff';
+  chart = echarts.init(calendar, store.state.darkMode ? 'dark' : 'light');
+  chart.setOption(option);
+})
+
+
 
 
 
