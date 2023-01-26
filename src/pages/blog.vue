@@ -1,7 +1,7 @@
 <template>
   <login v-if="store.state.showLoginBox"></login>
   <div class="loading"></div>
-  <div :class="`container`" ref="container">
+  <div class="container" ref="container">
     <canvas ref="mainCanvas" class="canvas"></canvas>
     <div :class="`left ${store.state.darkMode?'dark_background':''}`" @scroll="changeLoading">
       <titleHead :class="`${store.state.darkMode?'dark':''}`">正文</titleHead>
@@ -13,7 +13,7 @@
       <a target="" v-for="title in menu" :href="`#${title.id}`" :class="title.style">{{ title.value }}</a>
     </div>
   </div>
-  <l2d></l2d>
+  <l2d class="l2d"></l2d>
 </template>
 
 <script setup>
@@ -388,6 +388,11 @@ a:hover {
   
   .container {
     grid-template-columns: 1fr;
+    padding: 70px 20px 70px 20px;
+  }
+
+  .l2d {
+    display: none;
   }
 }
 </style>

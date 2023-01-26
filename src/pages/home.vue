@@ -31,19 +31,19 @@
   </div>
   <div class="aside">
     <div class="aside_single" :class="tagShow?'show':''">
-      <div class="aside_pull" @click="tagShow=tagShow?false:true">tag</div>
+      <div :class="`aside_pull ${store.state.darkMode?'dark_background':''}`" @click="tagShow=tagShow?false:true">tag</div>
       <tagList class="aside_main"></tagList>
     </div>
     <div class="aside_single" :class="searchShow?'show':''">
-      <div class="aside_pull" @click="searchShow=searchShow?false:true">搜索</div>
+      <div :class="`aside_pull ${store.state.darkMode?'dark_background':''}`" @click="searchShow=searchShow?false:true">搜索</div>
       <searchBar class="aside_main"></searchBar>
     </div>
     <div class="aside_single" :class="selfShow?'show':''">
-      <div class="aside_pull" @click="selfShow=selfShow?false:true">个人</div>
+      <div :class="`aside_pull ${store.state.darkMode?'dark_background':''}`" @click="selfShow=selfShow?false:true">个人</div>
       <self class="aside_main"></self>
     </div>
     <div class="aside_single" :class="linkShow?'show':''">
-      <div class="aside_pull" @click="linkShow=linkShow?false:true">网站</div>
+      <div :class="`aside_pull ${store.state.darkMode?'dark_background':''}`" @click="linkShow=linkShow?false:true">网站</div>
       <linkList class="aside_main"></linkList>
     </div>
   </div>

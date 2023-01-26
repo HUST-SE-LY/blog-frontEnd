@@ -140,4 +140,11 @@ watch(() => routes.path,(newVal) => {
     font-size: 12px;
   }
 }
+
+@media screen and (max-width: 500px) {
+  .head_container {
+    gap: 15px;
+    padding: 0 20px 0 20px;
+  }
+}
 </style>
