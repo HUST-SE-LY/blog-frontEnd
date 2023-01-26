@@ -1,14 +1,15 @@
 <template>
   <login v-if="store.state.showLoginBox"></login>
   <div class="loading"></div>
-  <canvas ref="mainCanvas" class="canvas"></canvas>
-  <div class="container" ref="container">
-    <div class="left" @scroll="changeLoading">
-      <titleHead>正文</titleHead>
-      <div v-html="content" class="main" ref="main"></div>
+  <div :class="`container`" ref="container">
+    <canvas ref="mainCanvas" class="canvas"></canvas>
+    <div :class="`left ${store.state.darkMode?'dark_background':''}`" @scroll="changeLoading">
+      <titleHead :class="`${store.state.darkMode?'dark':''}`">正文</titleHead>
+      <loading v-if="isLoading"></loading>
+      <div v-html="content" :class="`main ${store.state.darkMode?'dark':''}`" ref="main"></div>
     </div>
-    <div class="right">
-      <titleHead>目录</titleHead>
+    <div :class="`right ${store.state.darkMode?'dark_background':''}`">
+      <titleHead :class="`${store.state.darkMode?'dark':''}`">目录</titleHead>
       <a target="" v-for="title in menu" :href="`#${title.id}`" :class="title.style">{{ title.value }}</a>
     </div>
   </div>
@@ -16,14 +17,17 @@
 </template>
 
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import l2d from '../components/l2d.vue'
 import useAxios from '../composables/useAxios';
 import titleHead from '../components/titleHead.vue';
+import loading from '../components/loading.vue';
 import login from '../components/login.vue';
 import { useStore } from 'vuex';
 
+
+const isLoading = ref(false);
 const store = useStore();
 const axios = useAxios();
 const routes = useRoute()
@@ -35,21 +39,14 @@ const main = ref(null);
 const menu = ref([]);
 const tags = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
 onMounted(async () => {
+  isLoading.value = true;
   const id = routes.params.id;
   const result = await axios.post('get/blogById', {
     id: id,
   })
   content.value = result.data.html;
+  isLoading.value = false;
   initCanvas();
-  bubbly({
-    colorStart: "#ffffff",
-    colorStop: "#ffffff",
-    blur: 1,
-    compose: "source-over",
-    bubbles: 30,
-    bubbleFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`,
-    canvas: document.getElementById("canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
-  });
   window.addEventListener('resize', () => {
     initCanvas();
   });
@@ -70,9 +67,22 @@ function createTree(doms) {
   }
 }
 
+watch(() => store.state.darkMode,() => {
+  initCanvas()
+})
+
 function initCanvas() {
   mainCanvas.value.width = container.value.offsetWidth;
   mainCanvas.value.height = container.value.offsetHeight;
+  bubbly({
+    colorStart: `${store.state.darkMode?'#000000':'#ffffff'}`,
+    colorStop: `${store.state.darkMode?'#000000':'#ffffff'}`,
+    blur: 1,
+    compose: "source-over",
+    bubbles: 30,
+    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode?190:0)}, 100%, 50%, .3)`,
+    canvas: mainCanvas.value, // default is created and attached// default is 4 + Math.random() * width / 25
+  });
 }
 
 
@@ -134,7 +144,7 @@ onBeforeRouteLeave((to,from,next) => {
 a {
   display: block;
   text-decoration: none;
-  color: black;
+  color: v-bind(store.state.darkMode?'white':'black');
   transition: all 0.3s;
   position: relative;
   width: fit-content;
@@ -202,15 +212,16 @@ a:hover {
 .container {
   display: grid;
   grid-template-columns: 4fr 1fr;
-  margin-top: 50px;
-  padding: 20px;
+  padding: 70px;
   gap: 20px;
   scale: 1;
-
+  position: relative;
+  height: 100vh;
+  box-sizing: border-box;
 }
 
 .canvas {
-  position: absolute;
+  position: fixed;
   width: 100%;
   top: 0;
   left: 0;
@@ -273,12 +284,31 @@ a:hover {
 .main:deep(pre) {
   padding: 10px;
   border-radius: 10px;
-  background-color: #f6f8fa;
+  background-color: v-bind(store.state.darkMode?'#242424':'#f6f8fa');
   line-height: normal;
   overflow-x: scroll;
   margin-top: 20px;
   margin-bottom: 20px;
 }
+
+
+.main:deep(.hljs-keyword), .main:deep(.hljs-built_in ), .main:deep(.hljs-name ), .main:deep(.hljs-selector-tag), .main:deep(.hljs-tag) {
+  color: v-bind(store.state.darkMode?'#89ddff':'#00f');
+}
+
+.main:deep(.hljs-addition), .main:deep(.hljs-attribute), .main:deep(.hljs-literal), .main:deep(.hljs-section), .main:deep(.hljs-string), .main:deep(.hljs-template-tag), .main:deep(.hljs-template-variable), .main:deep(.hljs-title), .main:deep(.hljs-type) {
+  color: v-bind(store.state.darkMode?'#f07178':'#a31515');
+}
+
+.main:deep(.hljs-attr) {
+  color: v-bind(store.state.darkMode?'#f07178':'#a31515');
+}
+
+.main:deep(.hljs-comment), .main:deep(.hljs-quote), .main:deep(.hljs-variable) {
+  color: v-bind(store.state.darkMode?'#c3e88d':'green');
+}
+
+
 
 .main:deep(pre)::-webkit-scrollbar {
   display: none;
@@ -286,14 +316,14 @@ a:hover {
 
 .main:deep(code) {
   padding: 2px;
-  background: #f6f8fa;
+  background-color: v-bind(store.state.darkMode?'#242424':'#f6f8fa');
   color: palevioletred;
   font-family: 'Consolas';
 }
 
 .main:deep(pre) code {
   background: transparent;
-  color: black;
+  color: v-bind(store.state.darkMode?'#676e95':'black');
   font-family: 'Consolas';
   line-height: 24px;
   font-size: 16px;

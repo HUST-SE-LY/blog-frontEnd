@@ -1,5 +1,5 @@
 <template>
-  <div class="blog_list_container">
+  <div :class="`blog_list_container ${store.state.darkMode?'dark_background':''}`" >
     <loading v-if="isLoading"></loading>
     <titleHead>博客列表</titleHead>
     <div class="blog_box">

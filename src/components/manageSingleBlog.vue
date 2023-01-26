@@ -18,7 +18,6 @@
         <input type="file" ref="blogInput" style="display:none" accept=".md" @change="blogState = '已选择博客'">
         <input type="file" ref="pictureInput" style="display:none" accept="image/*" @change="pictureState = '已选择封面'">
       </div>
-
     </div>
     <div class="right">
       <div class="update" @click="changeState">{{ isUpdating?'保存': '修改' }}</div>
@@ -32,6 +31,7 @@ import { onMounted, ref } from 'vue';
 import useAxios from '../composables/useAxios';
 import singleTag from './singleTag.vue';
 const props = defineProps(['blogInfo']);
+const emits = defineEmits(['delete']);
 const tags = ref([]);
 const axios = useAxios();
 const blogInput = ref(null);
@@ -72,9 +72,11 @@ async function changeState() {
 }
 
 function addTag() {
-  tags.value.push({
-    name: tagName.value
-  });
+  if (tagName.value) {
+    tags.value.push({
+      name: tagName.value
+    });
+  }
   tagName.value = "";
   isTagging.value = false
 }
@@ -83,7 +85,8 @@ async function deleteBlog() {
   await axios.post('/delete/blog', {
     id: props.blogInfo.id,
   })
-  
+  emits('delete');
+
 }
 
 onMounted(async () => {

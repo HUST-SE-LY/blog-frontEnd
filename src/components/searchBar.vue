@@ -1,9 +1,9 @@
 <template>
-  <div class="search_container">
+  <div :class="`search_container ${store.state.darkMode?'dark_background':''}`">
     <titleHead>搜索</titleHead>
     <div class="input_box">
       <p :class="isFocus?'p_focus':(title?'':'p_origin')">搜索博客标题</p>
-      <input type="text" v-model="title" :class="isFocus?'input_focus':''" @focusin="isFocus = true" @focusout="isFocus = false" @keyup.enter="search">
+      <input type="text"  v-model="title" :class="isFocus?'input_focus':''" @focusin="isFocus = true" @focusout="isFocus = false" @keyup.enter="search">
     </div>
   </div>
 </template>
@@ -54,6 +54,7 @@ input {
   border: none;
   border-bottom: 1px solid gray;
   outline: none;
+  background-color: transparent;
   height: 24px;
   transition: all 0.3s;
   font-size: 14px;

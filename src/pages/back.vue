@@ -22,7 +22,7 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import setSelf from '../components/setSelf.vue';
 import login from '../components/login.vue';
 import music from '../components/music.vue';
@@ -43,28 +43,20 @@ function initCanvas() {
   mainCanvas.value.width = container.value.offsetWidth;
   mainCanvas.value.height = container.value.offsetHeight;
   bubbly({
-    colorStart: "#ffffff",
-    colorStop: "#ffffff",
+    colorStart: `${store.state.darkMode?'#000000':'#ffffff'}`,
+    colorStop: `${store.state.darkMode?'#000000':'#ffffff'}`,
     blur: 1,
     compose: "source-over",
     bubbles: 30,
-    bubbleFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`,
-    canvas: mainCanvas.value, // default is created and attached// default is 4 + Math.random() * width / 25
+    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode?190:0)}, 100%, 50%, .3)`,
+    canvas: document.getElementById("main_canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
   });
 }
 
+watch(() => store.state.darkMode,initCanvas)
 
 onMounted(() => {
   initCanvas();
-  bubbly({
-    colorStart: "#ffffff",
-    colorStop: "#ffffff",
-    blur: 1,
-    compose: "source-over",
-    bubbles: 30,
-    bubbleFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`,
-    canvas: document.getElementById("main_canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
-  });
   window.addEventListener('resize', () => {
     initCanvas();
   })

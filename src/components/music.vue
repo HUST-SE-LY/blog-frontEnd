@@ -1,5 +1,5 @@
 <template>
-  <div class="music_container">
+  <div :class="`music_container ${store.state.darkMode?'dark_background':''}`">
     <titleHead>BGM</titleHead>
     <p v-if="isLoading">加载歌单中</p>
     <div class="button_box" v-else>
@@ -27,7 +27,9 @@
 <script setup>
 import { onMounted, ref } from 'vue';
 import titleHead from './titleHead.vue';
-import useMusicAxios from "../composables/useMusicAxios"
+import useMusicAxios from "../composables/useMusicAxios";
+import { useStore } from 'vuex';
+const store = useStore()
 const axios = useMusicAxios();
 const isLoading = ref(false);
 const playList = ref([]);
@@ -230,6 +232,7 @@ button {
   margin-right: 20px;
   border: 1px solid rgba(130, 170, 255, .75);
   cursor: pointer;
+  color: v-bind(store.state.darkMode?'#ffffff':'#000000');
   transition: all 0.3s;
   margin-bottom: 10px;
 }

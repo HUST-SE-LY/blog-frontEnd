@@ -1,5 +1,5 @@
 <template>
-  <div class="link_list_container">
+  <div :class="`link_list_container ${store.state.darkMode?'dark_background':''}`">
     <titleHead>常用网址</titleHead>
     <div class="link_box">
       <a v-for="link in linkList" :href="link.url" target="_blank">{{link.name}}</a>
@@ -11,9 +11,11 @@
 import titleHead from './titleHead.vue';
 import useAxios from '../composables/useAxios';
 import { onMounted, ref } from 'vue';
+import { useStore } from 'vuex';
 
 const axios = useAxios();
 const linkList = ref([])
+const store = useStore()
 
 onMounted(async () => {
   const result = await axios.post("/get/link");
@@ -52,7 +54,7 @@ onMounted(async () => {
 
 a {
   text-decoration: none;
-  color: black;
+  color: v-bind(store.state.darkMode?'#ffffff':'#000000');
   padding: 5px 20px;
   transition: all 0.3s;
   border-radius: 20px;

@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="right">
-      <img :src="`http://150.158.43.171:8088/picture/${props.blogInfo.picture}`" alt="" class="home_pic">
+      <img :src="url" alt="" class="home_pic" ref="pic">
     </div>
 
   </div>
@@ -20,18 +20,28 @@
 <script setup>
 import singleTag from './singleTag.vue';
 import useAxios from '../composables/useAxios';
-import { onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import { useRouter } from 'vue-router';
 const router = useRouter();
 const props = defineProps(['blogInfo']);
 const axios = useAxios();
 const tagList = ref([]);
+const pic = ref(null);
+const url = ref('/src/assets/picture.svg');
 
 onMounted(async () => {
   const result = await axios.post('/get/blogTag',{
     id: props.blogInfo.id,
   })
   tagList.value = result.data.tags;
+  await nextTick();
+  const observer = new IntersectionObserver((entries) => {
+    if(entries[0].intersectionRatio > 0) {
+      url.value = `http://150.158.43.171:8088/picture/${props.blogInfo.picture}`;
+      observer.unobserve(pic.value);
+    }
+  });
+  observer.observe(pic.value)
 })
 
 async function intoDetail() {

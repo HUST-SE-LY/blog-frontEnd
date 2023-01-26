@@ -1,5 +1,5 @@
 <template>
-  <div class="self_container">
+  <div :class="`self_container ${store.state.darkMode?'dark_background':''}`">
     <titleHead>关于我</titleHead>
     <div class="avatar_box">
       <img src="../assets/avatar.png" alt="avatar">
@@ -7,10 +7,9 @@
         <p class="name">{{username}}</p>
         <p class="intro">{{userTitle}}</p>
       </div>
-      <a href="https://space.bilibili.com/291038650" target="_blank" class="logo"><img src="../assets/bilibili-line.svg"
-          alt="bilibili" class="svg"></a>
-      <a href="https://github.com/HUST-SE-LY" target="_blank" class="logo"> <img src="../assets/github.svg" alt="github"
-          class="svg"></a>
+      <a href="https://space.bilibili.com/291038650" target="_blank" class="logo"><div class="img_box"><img src="../assets/bilibili-line.svg"
+          alt="bilibili" class="svg"></div></a>
+      <a href="https://github.com/HUST-SE-LY" target="_blank" class="logo"> <div class="img_box"><img src="../assets/github.svg" alt="github" class="svg"></div></a>
     </div>
     <p class="des">{{userIntro}}</p>
   </div>
@@ -20,11 +19,13 @@
 import titleHead from './titleHead.vue';
 import useAxios from '../composables/useAxios';
 import { ref, onMounted } from 'vue';
+import { useStore } from 'vuex';
 
 const axios = useAxios();
 const username = ref("");
 const userTitle = ref("");
 const userIntro = ref("");
+const store = useStore();
 
 onMounted(async () => {
   const result = await axios.post('/get/userInfo');
@@ -55,12 +56,24 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   gap: 10px;
+
 }
 
 img {
   width: 60px;
   height: 60px;
   border-radius: 30px;
+  display: block;
+}
+
+.img_box {
+  width: 40px;
+  height: 40px;
+  background-color: white;
+  margin-left: 10px;
+  box-sizing: border-box;
+  border-radius: 30px;
+  padding-top: 5px;
 }
 
 .intro {
@@ -70,7 +83,8 @@ img {
 
 .svg {
   width: 30px;
-  margin-left: 10px;
+  margin-left: 5px;
+  height: 30px;
 }
 
 .des {
@@ -78,4 +92,5 @@ img {
   color: gray;
   margin-top: 20px;
 }
+
 </style>

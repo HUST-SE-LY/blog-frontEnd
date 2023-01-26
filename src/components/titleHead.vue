@@ -1,12 +1,16 @@
 <template>
   <div class="title_container">
     <div class="divider"></div>
-    <p class="title"><slot></slot></p>
+    <p :class="`title ${store.state.darkMode?'dark':''}`"><slot></slot></p>
   </div>
 </template>
 
 <script setup>
+import { useStore } from 'vuex';
 
+
+
+const store = useStore();
 </script>
 
 <style scoped>

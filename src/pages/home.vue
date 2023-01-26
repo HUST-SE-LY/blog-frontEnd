@@ -50,7 +50,7 @@
 </template>
 
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, ref, watch } from 'vue';
 import typing from '../components/typing.vue';
 import tagList from '../components/tagList.vue';
 import blogList from '../components/blogList.vue';
@@ -86,28 +86,32 @@ onBeforeRouteLeave((to, from, next) => {
   }
 })
 
+watch(() => store.state.darkMode,initCanvas)
+
 const isShowLogin = computed(() => store.state.showLoginBox);
 
 function initCanvas() {
   mainCanvas.value.width = main.value.offsetWidth;
   mainCanvas.value.height = main.value.offsetHeight;
   bubbly({
-    colorStart: "#ffffff",
-    colorStop: "#ffffff",
+    colorStart: `${store.state.darkMode?'#000000':'#ffffff'}`,
+    colorStop: `${store.state.darkMode?'#000000':'#ffffff'}`,
     blur: 1,
     compose: "source-over",
     bubbles: 30,
-    bubbleFunc: () => `hsla(${Math.random() * 50}, 100%, 50%, .3)`,
+    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode?190:0)}, 100%, 50%, .3)`,
     canvas: document.getElementById("main_canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
   });
 }
 
-onMounted(() => {
+onMounted(async () => {
   initCanvas();
   window.addEventListener('resize', () => {
     initCanvas();
-  })
+  });
 })
+
+
 
 </script>
 
@@ -145,6 +149,7 @@ onMounted(() => {
 .home_container {
   height: 100vh;
   overflow-y: scroll;
+  overflow-x: hidden;
   background-color: transparent;
 }
 
@@ -187,7 +192,7 @@ onMounted(() => {
 .home_main {
   height: 92vh;
   position: relative;
-  background: white;
+  background: v-bind(store.state.darkMode?'#000000':'#ffffff');
   z-index: 1000;
   box-sizing: border-box;
   display: grid;
@@ -202,7 +207,7 @@ onMounted(() => {
 }
 
 .wrap {
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, v-bind(store.state.darkMode?0.5:0)));
   position: absolute;
   top: 0;
   left: 0;

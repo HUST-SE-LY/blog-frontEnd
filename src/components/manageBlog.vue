@@ -1,7 +1,7 @@
 <template>
   <div class="manage_blog_container" @scroll="fresh" >
     <titleHead>管理博客</titleHead>
-    <manageSingleBlog v-for="blog in blogList" :key="blog.id" :blog-info="blog" ></manageSingleBlog>
+    <manageSingleBlog v-for="(blog,index) in blogList" :key="blog.id" :blog-info="blog" @delete="deleteFromList(index)" ></manageSingleBlog>
   </div>
 </template>
 
@@ -33,6 +33,10 @@ async function fresh(e) {
     return ;
   }
   isBottom.value = await bottomFresh("/get/blog",limit,offset,isLoading,e,blogList);
+}
+
+function deleteFromList(index) {
+  blogList.value.splice(index, 1);
 }
 
 

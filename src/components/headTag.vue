@@ -6,6 +6,7 @@
       <div class="button" v-if="!isLogin" @click="store.commit('showLogin')">登录</div>
       <div class="avatar" v-else></div>
       <router-link to="/about" class="link">关于</router-link>
+      <dark-button></dark-button>
     </div>   
   </div>
 </template>
@@ -15,6 +16,7 @@ import {useRoute} from 'vue-router';
 import { ref, watch } from 'vue';
 import { useStore } from 'vuex';
 import { computed } from '@vue/reactivity';
+import darkButton from './darkButton.vue';
 const store = useStore();
 const isLogin = computed(() => {
   return store.state.isLogin

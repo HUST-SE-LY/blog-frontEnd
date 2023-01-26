@@ -10,6 +10,7 @@ const store = createStore({
   plugins:[persistState],
   state() {
     return {
+      darkMode: false,
       isLogin: false,
       showLoginBox: false,
       tag: null,
@@ -40,6 +41,9 @@ const store = createStore({
     },
     startSearch(state,payLoad) {
       state.searchWord = payLoad.title;
+    },
+    changeColorStyle(state) {
+      state.darkMode = !state.darkMode;
     }
   }
 })

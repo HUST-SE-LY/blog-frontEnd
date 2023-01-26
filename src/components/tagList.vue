@@ -1,6 +1,6 @@
 <template>
-  <div class="tag_list_container">
-    <titleHead>常用tag</titleHead>
+  <div :class="`tag_list_container ${store.state.darkMode?'dark_background':''}`">
+    <titleHead >常用tag</titleHead>
     <div class="tag_box">
       <singleTag v-for="tag in tagList" @click="chooseTag(tag.name)" :key="tag.id" :class="store.state.tag === tag.name?'choose':''">{{ tag.name }}</singleTag>
     </div>
