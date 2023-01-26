@@ -197,7 +197,7 @@ onMounted(async () => {
   box-sizing: border-box;
   display: grid;
   grid-template-columns: 1fr 2fr 1fr;
-  padding: 50px;
+  padding: 50px 50px 10px 50px;
   gap: 50px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
 }
@@ -233,6 +233,19 @@ onMounted(async () => {
   animation: movein 0.75s ease-out forwards;
   z-index: 1000000;
 }
+
+.left, .right_container{
+  max-height: calc(100%);
+  padding: 5px 10px;
+  overflow-y: scroll;
+  box-sizing: border-box;
+}
+
+.left::-webkit-scrollbar, .right_container::-webkit-scrollbar {
+  display: none;
+}
+
+
 
 .aside {
   display: none;
@@ -337,6 +350,13 @@ onMounted(async () => {
     height: 90vh;
     min-height: none;
   }
+}
+
+@media screen and (max-height: 800px){
+  .home_main {
+    height: 90vh;
+  }
+  
 }
 
 @media screen and (max-width: 800px) {

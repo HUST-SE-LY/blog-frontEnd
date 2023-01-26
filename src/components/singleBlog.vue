@@ -27,7 +27,7 @@ const props = defineProps(['blogInfo']);
 const axios = useAxios();
 const tagList = ref([]);
 const pic = ref(null);
-const url = ref('/src/assets/picture.svg');
+const url = ref('../assets/picture.svg');
 
 onMounted(async () => {
   const result = await axios.post('/get/blogTag',{
@@ -113,6 +113,7 @@ async function intoDetail() {
   width: 100%;
   gap: 10px;
   flex-wrap: nowrap;
+  align-items: center;
 }
 
 .tag_box::-webkit-scrollbar {
@@ -238,6 +239,25 @@ async function intoDetail() {
 
   .tag_box {
     width: 100px;
+  }
+
+  .home_pic {
+    width: 105px;
+    height: 60px;
+  }
+
+  .title {
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+
+  .content {
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+
+  .date {
+    font-size: 12px;
   }
 }
 

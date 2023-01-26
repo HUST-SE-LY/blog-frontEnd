@@ -218,6 +218,7 @@ a:hover {
   position: relative;
   height: 100vh;
   box-sizing: border-box;
+  overflow: hidden;
 }
 
 .canvas {
@@ -237,7 +238,7 @@ a:hover {
   transition: all 0.3s;
   box-sizing: border-box;
   margin-bottom: 20px;
-  max-height: 800px;
+  max-height: calc(100vh - 100px);
   overflow: scroll;
   position: relative;
   animation: movein 1s forwards ease-out;

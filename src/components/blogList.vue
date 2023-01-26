@@ -158,11 +158,13 @@ async function nextPage() {
   border-radius: 15px;
   height: fit-content;
   z-index: -1;
-  padding: 20px;
+  padding: 20px 20px 0 20px;
   background-color: white;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.1);
   transition: all 0.3s;
   position: relative;
+  box-sizing: border-box;
+  max-height: calc(100% - 50px);
 }
 
 .blog_list_container:hover {
@@ -194,5 +196,16 @@ async function nextPage() {
 .button:hover {
   background-color: rgba(130, 170, 255);
   color: white;
+}
+
+@media screen and (max-height: 800px) {
+  .bottom {
+    padding: 10px;
+  }
+
+  .button {
+    padding: 2px 10px;
+    font-size: 12px;
+  }
 }
 </style>

@@ -1,15 +1,17 @@
 <template>
-  <div :class="`music_container ${store.state.darkMode?'dark_background':''}`">
+  <div :class="`music_container ${store.state.darkMode ? 'dark_background' : ''}`">
     <titleHead>BGM</titleHead>
     <p v-if="isLoading">加载歌单中</p>
     <div class="button_box" v-else>
-      <p class="name">当前歌曲：<span style="color: rgba(130, 170, 255); margin-right: 10px;">{{ currentSongName }}</span><button @click="changeMusic('random')">随机一首</button></p>
+      <p class="name">当前歌曲：<span style="color: rgba(130, 170, 255); margin-right: 10px;">{{
+        currentSongName
+      }}</span><button @click="changeMusic('random')">随机一首</button></p>
       <div class="loading_box">
-        <p class="music_time">{{songCurrentTime}}</p>
+        <p class="music_time">{{ songCurrentTime }}</p>
         <div class="loading_ball" @click="movingDuration">
           <div class="have_loaded"></div>
         </div>
-        <p class="music_time">{{songTime}}</p>
+        <p class="music_time">{{ songTime }}</p>
       </div>
       <button @click="changeMusic('last')">上一首</button>
       <button @click="changePlayState">{{ playState }}</button>
@@ -70,9 +72,6 @@ async function changePlayState() {
       console.log(lyrResult.data.lrc.lyric)
       handleLyr(lyrResult.data.lrc.lyric)
     }
-    audio.value.addEventListener('canplay',() => {
-      songTime.value = handleSongTime(audio.value.duration);
-    })
     audio.value.play();
     playState.value = '暂停';
   }
@@ -80,10 +79,13 @@ async function changePlayState() {
     audio.value.pause();
     playState.value = '播放';
   }
+  audio.value.addEventListener('canplay', () => {
+    songTime.value = handleSongTime(audio.value.duration);
+  })
 }
 
 async function changePlayList() {
-  if(playListId.value === 2517473337) {
+  if (playListId.value === 2517473337) {
     playListId.value = 2172060689;
   } else {
     playListId.value = 2517473337;
@@ -99,7 +101,7 @@ async function changePlayList() {
   lyricsTrans.value = [];
   lyrTime.value = [];
   currentLyc.value = '';
-  currentTlyc.value = ''; 
+  currentTlyc.value = '';
   currentSongName.value = result.data.songs[0].name;
   playState.value = "播放";
   songTime.value = '0:00';
@@ -109,7 +111,7 @@ function handleTrans(lyricsList) {
   const list = lyricsList.split('\n');
   console.log(list)
   for (let i = 0; i < list.length; i++) {
-    if (list[i][0] === '['&& list[i][1] === '0') {
+    if (list[i][0] === '[' && list[i][1] === '0') {
       lyricsTrans.value.push(list[i].split(']')[1]);
     }
   }
@@ -147,14 +149,14 @@ function handleTime(time) {
 }
 
 function handleSongTime(time) {
-  const minute = parseInt(parseFloat(time)/60);
-  const second = parseInt(time - 60*minute) < 10? `0${parseInt(time - 60*minute)}`: parseInt(time - 60*minute);
+  const minute = parseInt(parseFloat(time) / 60);
+  const second = parseInt(time - 60 * minute) < 10 ? `0${parseInt(time - 60 * minute)}` : parseInt(time - 60 * minute);
   return `${minute}:${second}`
 }
 
 function judgeLoadingLength(time) {
-  if(audio.value.duration) {
-    const length = (time/audio.value.duration)*200;
+  if (audio.value.duration) {
+    const length = (time / audio.value.duration) * 200;
     return length + 'px';
   }
   return 0;
@@ -165,7 +167,7 @@ function movingDuration(e) {
 }
 
 async function changeMusic(mode) {
-  if(playState.value === '加载中') {
+  if (playState.value === '加载中') {
     return;
   }
   songTime.value = '0:00';
@@ -182,7 +184,7 @@ async function changeMusic(mode) {
   if (mode === 'last') {
     currentIndex.value--;
   }
-  if( mode === 'random') {
+  if (mode === 'random') {
     currentIndex.value = Math.floor(Math.random() * playList.value.length);
   }
   if (currentIndex.value === playList.value.length) {
@@ -201,8 +203,8 @@ async function changeMusic(mode) {
     handleTrans(lyrResult.data.tlyric.lyric);
   }
   handleLyr(lyrResult.data.lrc.lyric);
-  audio.value.addEventListener('canplay',() => {
-      songTime.value = handleSongTime(audio.value.duration);
+  audio.value.addEventListener('canplay', () => {
+    songTime.value = handleSongTime(audio.value.duration);
   })
   audio.value.play()
   playState.value = '暂停';
@@ -236,7 +238,7 @@ button {
   margin-right: 20px;
   border: 1px solid rgba(130, 170, 255, .75);
   cursor: pointer;
-  color: v-bind(store.state.darkMode?'#ffffff':'#000000');
+  color: v-bind(store.state.darkMode ? '#ffffff' : '#000000');
   transition: all 0.3s;
   margin-bottom: 10px;
 }

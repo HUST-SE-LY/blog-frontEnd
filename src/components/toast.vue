@@ -1,11 +1,13 @@
 <template>
-  <div class="container">
+  <div :class="`container ${store.state.darkMode ? 'dark_background' : ''}`">
     <slot></slot>
   </div>
 </template>
 
 <script setup>
+import { useStore } from 'vuex';
 
+const store = useStore()
 </script>
 
 <style scoped>

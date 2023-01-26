@@ -1,6 +1,6 @@
 <template>
   <toast v-if="showToast">密码错误</toast>
-  <div class="login_container">
+  <div :class="`login_container ${store.state.darkMode ? 'dark_background' : ''}`">
     <p class="close" @click="store.commit('closeLogin')">关闭</p>
     <titleHead>登录</titleHead>
     <div class="input_box">
@@ -76,6 +76,8 @@ input {
   height: 24px;
   transition: all 0.3s;
   font-size: 14px;
+  background-color: transparent;
+  color: v-bind(store.state.darkMode?'#ffffff':'#000000');
 }
 
 p {
