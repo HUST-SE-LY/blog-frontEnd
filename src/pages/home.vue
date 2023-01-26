@@ -7,9 +7,9 @@
       <typing word="Coisíní's Blog" class="head_title"></typing>
       <img src="../assets/homeBack.jpg" alt="background" class="back_pic">
       <div class="wrap"></div>
+      <div class="title">Coisíní's Blog</div>
+      <typing word="縱有疾風起，人生不言棄" class="sub_title"></typing>
     </div>
-    <div class="title">Coisíní's Blog</div>
-    <typing word="縱有疾風起，人生不言棄" class="sub_title"></typing>
     <img src="../assets/homeBack.jpg" alt="background" class="back_pic pic">
     <div class="home_main" id="main" ref="main">
       <canvas id="main_canvas" ref="mainCanvas"></canvas>
@@ -30,24 +30,20 @@
     </div>
   </div>
   <div class="aside">
-    <div class="aside_single" :class="tagShow ? 'show' : ''">
-      <div :class="`aside_pull ${store.state.darkMode ? 'dark_background' : ''}`" @click="tagShow = tagShow ? false : true">tag
-      </div>
+    <div class="aside_single" :class="tagShow?'show':''">
+      <div :class="`aside_pull ${store.state.darkMode?'dark_background':''}`" @click="tagShow=tagShow?false:true">tag</div>
       <tagList class="aside_main"></tagList>
     </div>
-    <div class="aside_single" :class="searchShow ? 'show' : ''">
-      <div :class="`aside_pull ${store.state.darkMode ? 'dark_background' : ''}`" @click="searchShow = searchShow ? false : true">
-        搜索</div>
+    <div class="aside_single" :class="searchShow?'show':''">
+      <div :class="`aside_pull ${store.state.darkMode?'dark_background':''}`" @click="searchShow=searchShow?false:true">搜索</div>
       <searchBar class="aside_main"></searchBar>
     </div>
-    <div class="aside_single" :class="selfShow ? 'show' : ''">
-      <div :class="`aside_pull ${store.state.darkMode ? 'dark_background' : ''}`" @click="selfShow = selfShow ? false : true">个人
-      </div>
+    <div class="aside_single" :class="selfShow?'show':''">
+      <div :class="`aside_pull ${store.state.darkMode?'dark_background':''}`" @click="selfShow=selfShow?false:true">个人</div>
       <self class="aside_main"></self>
     </div>
-    <div class="aside_single" :class="linkShow ? 'show' : ''">
-      <div :class="`aside_pull ${store.state.darkMode ? 'dark_background' : ''}`" @click="linkShow = linkShow ? false : true">网站
-      </div>
+    <div class="aside_single" :class="linkShow?'show':''">
+      <div :class="`aside_pull ${store.state.darkMode?'dark_background':''}`" @click="linkShow=linkShow?false:true">网站</div>
       <linkList class="aside_main"></linkList>
     </div>
   </div>
@@ -90,7 +86,7 @@ onBeforeRouteLeave((to, from, next) => {
   }
 })
 
-watch(() => store.state.darkMode, initCanvas)
+watch(() => store.state.darkMode,initCanvas)
 
 const isShowLogin = computed(() => store.state.showLoginBox);
 
@@ -98,12 +94,12 @@ function initCanvas() {
   mainCanvas.value.width = main.value.offsetWidth;
   mainCanvas.value.height = main.value.offsetHeight;
   bubbly({
-    colorStart: `${store.state.darkMode ? '#000000' : '#ffffff'}`,
-    colorStop: `${store.state.darkMode ? '#000000' : '#ffffff'}`,
+    colorStart: `${store.state.darkMode?'#000000':'#ffffff'}`,
+    colorStop: `${store.state.darkMode?'#000000':'#ffffff'}`,
     blur: 1,
     compose: "source-over",
     bubbles: 30,
-    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode ? 190 : 0)}, 100%, 50%, .3)`,
+    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode?190:0)}, 100%, 50%, .3)`,
     canvas: document.getElementById("main_canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
   });
 }
@@ -185,6 +181,7 @@ onMounted(async () => {
 
 .back_pic {
   width: 100%;
+  pointer-events: none;
 }
 
 .pic {
@@ -195,7 +192,7 @@ onMounted(async () => {
 .home_main {
   height: 92vh;
   position: relative;
-  background: v-bind(store.state.darkMode ? '#000000' : '#ffffff');
+  background: v-bind(store.state.darkMode?'#000000':'#ffffff');
   z-index: 1000;
   box-sizing: border-box;
   display: grid;
@@ -211,7 +208,7 @@ onMounted(async () => {
 
 .wrap {
   pointer-events: none;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, v-bind(store.state.darkMode ? 0.5 : 0)));
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, v-bind(store.state.darkMode?0.5:0)));
   position: absolute;
   top: 0;
   left: 0;
@@ -224,7 +221,7 @@ onMounted(async () => {
   text-align: center;
   background: linear-gradient(to right, rgb(95, 142, 244) 50%, white, white);
   background-size: 300%;
-  background-position: 90%;
+  background-position: 75%;
   -webkit-background-clip: text;
   color: transparent;
   position: absolute;
@@ -234,16 +231,13 @@ onMounted(async () => {
   transition: all 1s;
   letter-spacing: 2px;
   animation: movein 0.75s ease-out forwards;
-  z-index: 1000;
+  z-index: 1000000;
 }
 
 .aside {
   display: none;
 }
 
-.title:hover {
-  background-position: 75%;
-}
 
 .sub_title {
   position: absolute;
@@ -365,4 +359,5 @@ onMounted(async () => {
     padding: 20px;
   }
 }
+
 </style>

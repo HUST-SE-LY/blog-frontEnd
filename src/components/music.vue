@@ -70,7 +70,9 @@ async function changePlayState() {
       console.log(lyrResult.data.lrc.lyric)
       handleLyr(lyrResult.data.lrc.lyric)
     }
-    songTime.value = handleSongTime(audio.value.duration);
+    audio.value.addEventListener('canplay',() => {
+      songTime.value = handleSongTime(audio.value.duration);
+    })
     audio.value.play();
     playState.value = '暂停';
   }
@@ -189,17 +191,19 @@ async function changeMusic(mode) {
   if (currentIndex.value < 0) {
     currentIndex.value = playList.value.length - 1;
   }
+
   currentSongName.value = playList.value[currentIndex.value].name;
   playState.value = '加载中'
   const result = await axios.get(`/song/url?id=${playList.value[currentIndex.value].id}`);
   currentUrl.value = result.data.data[0].url;
   const lyrResult = await axios.get(`/lyric/new?id=${playList.value[currentIndex.value].id}`);
-  console.log(lyrResult);
   if (lyrResult.data.tlyric) {
     handleTrans(lyrResult.data.tlyric.lyric);
   }
   handleLyr(lyrResult.data.lrc.lyric);
-  songTime.value = handleSongTime(audio.value.duration);
+  audio.value.addEventListener('canplay',() => {
+      songTime.value = handleSongTime(audio.value.duration);
+  })
   audio.value.play()
   playState.value = '暂停';
 }
