@@ -3,7 +3,7 @@ import axios from "axios";
 function useAxios() {
   const instance = axios.create({
     timeout: 10000,
-    baseURL: "http://150.158.43.171:8088",
+    baseURL: "api",
   });
 
   instance.interceptors.request.use((config) => {
