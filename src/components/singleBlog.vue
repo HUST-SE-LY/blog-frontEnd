@@ -37,7 +37,7 @@ onMounted(async () => {
   await nextTick();
   const observer = new IntersectionObserver((entries) => {
     if(entries[0].intersectionRatio > 0) {
-      url.value = `http://150.158.43.171:8088/picture/${props.blogInfo.picture}`;
+      url.value = `/api/picture/${props.blogInfo.picture}`;
       observer.unobserve(pic.value);
     }
   });
