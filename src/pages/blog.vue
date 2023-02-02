@@ -76,16 +76,28 @@ onBeforeRouteLeave(() => {
   scrollTop.value = left.value.scrollTop;
 })
 
-onActivated(() => {
-  if(routes.params.id === currentId.value) {
+onActivated(async () => {
+  if (routes.params.id === currentId.value) {
     left.value.scrollTop = scrollTop.value;
+  } else {
+    const id = routes.params.id;
+    currentId.value = id;
+    const result = await axios.post('get/blogById', {
+      id: id,
+    })
+    content.value = result.data.html;
+    isLoading.value = false;
+    await nextTick();
+    const doms = main.value.children;
+    createTree(doms);
   }
-  
+
 })
 
 watch(() => store.state.darkMode, () => {
   initCanvas()
 })
+
 
 function initCanvas() {
   mainCanvas.value.width = container.value.offsetWidth;
