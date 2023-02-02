@@ -2,13 +2,13 @@
   <login v-if="store.state.showLoginBox"></login>
   <div class="container" ref="container">
     <canvas ref="mainCanvas" class="canvas"></canvas>
-    <div :class="`left ${store.state.darkMode?'dark_background':''}`" ref="left">
-      <titleHead :class="`${store.state.darkMode?'dark':''}`">正文</titleHead>
+    <div :class="`left ${store.state.darkMode ? 'dark_background' : ''}`" ref="left">
+      <titleHead :class="`${store.state.darkMode ? 'dark' : ''}`">正文</titleHead>
       <loading v-if="isLoading"></loading>
-      <div v-html="content" :class="`main ${store.state.darkMode?'dark':''}`" ref="main"></div>
+      <div v-html="content" :class="`main ${store.state.darkMode ? 'dark' : ''}`" ref="main"></div>
     </div>
-    <div :class="`right ${store.state.darkMode?'dark_background':''}`">
-      <titleHead :class="`${store.state.darkMode?'dark':''}`">目录</titleHead>
+    <div :class="`right ${store.state.darkMode ? 'dark_background' : ''}`">
+      <titleHead :class="`${store.state.darkMode ? 'dark' : ''}`">目录</titleHead>
       <a target="" v-for="title in menu" :href="`#${title.id}`" :class="title.style">{{ title.value }}</a>
     </div>
   </div>
@@ -24,10 +24,12 @@ import titleHead from '../components/titleHead.vue';
 import loading from '../components/loading.vue';
 import login from '../components/login.vue';
 import { useStore } from 'vuex';
+import router from '../router';
 
 
 const left = ref(null);
 const scrollTop = ref(0);
+const currentId = ref(0);
 const isLoading = ref(false);
 const store = useStore();
 const axios = useAxios();
@@ -42,6 +44,7 @@ const tags = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
 onMounted(async () => {
   isLoading.value = true;
   const id = routes.params.id;
+  currentId.value = id;
   const result = await axios.post('get/blogById', {
     id: id,
   })
@@ -69,14 +72,18 @@ function createTree(doms) {
 }
 
 onBeforeRouteLeave(() => {
+  currentId.value = routes.params.id;
   scrollTop.value = left.value.scrollTop;
 })
 
 onActivated(() => {
- left.value.scrollTop = scrollTop.value;
+  if(routes.params.id === currentId.value) {
+    left.value.scrollTop = scrollTop.value;
+  }
+  
 })
 
-watch(() => store.state.darkMode,() => {
+watch(() => store.state.darkMode, () => {
   initCanvas()
 })
 
@@ -84,21 +91,21 @@ function initCanvas() {
   mainCanvas.value.width = container.value.offsetWidth;
   mainCanvas.value.height = container.value.offsetHeight;
   bubbly({
-    colorStart: `${store.state.darkMode?'#000000':'#ffffff'}`,
-    colorStop: `${store.state.darkMode?'#000000':'#ffffff'}`,
+    colorStart: `${store.state.darkMode ? '#000000' : '#ffffff'}`,
+    colorStop: `${store.state.darkMode ? '#000000' : '#ffffff'}`,
     blur: 1,
     compose: "source-over",
     bubbles: 30,
-    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode?190:0)}, 100%, 50%, .3)`,
+    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode ? 190 : 0)}, 100%, 50%, .3)`,
     canvas: mainCanvas.value, // default is created and attached// default is 4 + Math.random() * width / 25
   });
 }
 
 
 
-onBeforeRouteLeave((to,from,next) => {
-  if(to.path === '/back') {
-    if(store.state.isLogin) {
+onBeforeRouteLeave((to, from, next) => {
+  if (to.path === '/back') {
+    if (store.state.isLogin) {
       next()
     } else {
       store.commit('showLogin')
@@ -120,7 +127,9 @@ onBeforeRouteLeave((to,from,next) => {
   from {
     opacity: 0;
     transform: translateY(10px);
-  } to {
+  }
+
+  to {
     opacity: 1;
     transform: translateY(0px);
   }
@@ -130,11 +139,13 @@ onBeforeRouteLeave((to,from,next) => {
   form {
     scale: 0.1;
     opacity: 0;
-  } to {
+  }
+
+  to {
     scale: 1;
     opacity: 1;
   }
-  
+
 }
 
 
@@ -146,7 +157,7 @@ onBeforeRouteLeave((to,from,next) => {
 a {
   display: block;
   text-decoration: none;
-  color: v-bind(store.state.darkMode?'white':'black');
+  color: v-bind(store.state.darkMode ? 'white' : 'black');
   transition: all 0.3s;
   position: relative;
   width: fit-content;
@@ -277,7 +288,7 @@ a:hover {
 .main:deep(pre) {
   padding: 10px;
   border-radius: 10px;
-  background-color: v-bind(store.state.darkMode?'#242424':'#f6f8fa');
+  background-color: v-bind(store.state.darkMode ? '#242424' : '#f6f8fa');
   line-height: normal;
   overflow-x: scroll;
   margin-top: 20px;
@@ -285,20 +296,34 @@ a:hover {
 }
 
 
-.main:deep(.hljs-keyword), .main:deep(.hljs-built_in ), .main:deep(.hljs-name ), .main:deep(.hljs-selector-tag), .main:deep(.hljs-tag) {
-  color: v-bind(store.state.darkMode?'#89ddff':'#00f');
+.main:deep(.hljs-keyword),
+.main:deep(.hljs-built_in),
+.main:deep(.hljs-name),
+.main:deep(.hljs-selector-tag),
+.main:deep(.hljs-tag) {
+  color: v-bind(store.state.darkMode ? '#89ddff' : '#00f');
 }
 
-.main:deep(.hljs-addition), .main:deep(.hljs-attribute), .main:deep(.hljs-literal), .main:deep(.hljs-section), .main:deep(.hljs-string), .main:deep(.hljs-template-tag), .main:deep(.hljs-template-variable), .main:deep(.hljs-title), .main:deep(.hljs-type) {
-  color: v-bind(store.state.darkMode?'#f07178':'#a31515');
+.main:deep(.hljs-addition),
+.main:deep(.hljs-attribute),
+.main:deep(.hljs-literal),
+.main:deep(.hljs-section),
+.main:deep(.hljs-string),
+.main:deep(.hljs-template-tag),
+.main:deep(.hljs-template-variable),
+.main:deep(.hljs-title),
+.main:deep(.hljs-type) {
+  color: v-bind(store.state.darkMode ? '#f07178' : '#a31515');
 }
 
 .main:deep(.hljs-attr) {
-  color: v-bind(store.state.darkMode?'#f07178':'#a31515');
+  color: v-bind(store.state.darkMode ? '#f07178' : '#a31515');
 }
 
-.main:deep(.hljs-comment), .main:deep(.hljs-quote), .main:deep(.hljs-variable) {
-  color: v-bind(store.state.darkMode?'#c3e88d':'green');
+.main:deep(.hljs-comment),
+.main:deep(.hljs-quote),
+.main:deep(.hljs-variable) {
+  color: v-bind(store.state.darkMode ? '#c3e88d' : 'green');
 }
 
 
@@ -309,14 +334,14 @@ a:hover {
 
 .main:deep(code) {
   padding: 2px;
-  background-color: v-bind(store.state.darkMode?'#242424':'#f6f8fa');
+  background-color: v-bind(store.state.darkMode ? '#242424' : '#f6f8fa');
   color: palevioletred;
   font-family: 'Consolas';
 }
 
 .main:deep(pre) code {
   background: transparent;
-  color: v-bind(store.state.darkMode?'#676e95':'black');
+  color: v-bind(store.state.darkMode ? '#676e95' : 'black');
   font-family: 'Consolas';
   line-height: 24px;
   font-size: 16px;
@@ -378,7 +403,7 @@ a:hover {
   .right {
     display: none;
   }
-  
+
   .container {
     grid-template-columns: 1fr;
     padding: 70px 20px 70px 20px;

@@ -69,19 +69,18 @@ async function changePlayState() {
       if (lyrResult.data.tlyric) {
         handleTrans(lyrResult.data.tlyric.lyric);
       }
-      console.log(lyrResult.data.lrc.lyric)
       handleLyr(lyrResult.data.lrc.lyric)
     }
-    audio.value.play();
+    audio.value.addEventListener('canplay', () => {
+      songTime.value = handleSongTime(audio.value.duration);
+      audio.value.play();
+    })
     playState.value = '暂停';
   }
   else if (playState.value === '暂停') {
     audio.value.pause();
     playState.value = '播放';
   }
-  audio.value.addEventListener('canplay', () => {
-    songTime.value = handleSongTime(audio.value.duration);
-  })
 }
 
 async function changePlayList() {

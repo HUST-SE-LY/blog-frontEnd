@@ -92,7 +92,6 @@ onBeforeRouteLeave((to, from, next) => {
 })
 
 onActivated(() => {
-  console.log('init')
   initCanvas()
 })
 
