@@ -60,6 +60,7 @@ onMounted(async () => {
 })
 
 function createTree(doms) {
+  menu.value = [];
   for (let i = 0; i < doms.length; i++) {
     if (tags.includes(doms[i].tagName)) {
       menu.value.push({
