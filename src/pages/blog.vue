@@ -1,9 +1,8 @@
 <template>
   <login v-if="store.state.showLoginBox"></login>
-  <div class="loading"></div>
   <div class="container" ref="container">
     <canvas ref="mainCanvas" class="canvas"></canvas>
-    <div :class="`left ${store.state.darkMode?'dark_background':''}`" @scroll="changeLoading">
+    <div :class="`left ${store.state.darkMode?'dark_background':''}`" ref="left">
       <titleHead :class="`${store.state.darkMode?'dark':''}`">正文</titleHead>
       <loading v-if="isLoading"></loading>
       <div v-html="content" :class="`main ${store.state.darkMode?'dark':''}`" ref="main"></div>
@@ -17,7 +16,7 @@
 </template>
 
 <script setup>
-import { nextTick, onMounted, ref, watch } from 'vue';
+import { nextTick, onActivated, onMounted, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
 import l2d from '../components/l2d.vue'
 import useAxios from '../composables/useAxios';
@@ -27,6 +26,8 @@ import login from '../components/login.vue';
 import { useStore } from 'vuex';
 
 
+const left = ref(null);
+const scrollTop = ref(0);
 const isLoading = ref(false);
 const store = useStore();
 const axios = useAxios();
@@ -67,6 +68,14 @@ function createTree(doms) {
   }
 }
 
+onBeforeRouteLeave(() => {
+  scrollTop.value = left.value.scrollTop;
+})
+
+onActivated(() => {
+ left.value.scrollTop = scrollTop.value;
+})
+
 watch(() => store.state.darkMode,() => {
   initCanvas()
 })
@@ -83,13 +92,6 @@ function initCanvas() {
     bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode?190:0)}, 100%, 50%, .3)`,
     canvas: mainCanvas.value, // default is created and attached// default is 4 + Math.random() * width / 25
   });
-}
-
-
-
-function changeLoading(e) {
-  const width = (e.srcElement.scrollTop / (e.srcElement.scrollHeight - e.srcElement.clientHeight)) * 100;
-  loadingWidth.value = width + "%"
 }
 
 
@@ -262,16 +264,6 @@ a:hover {
   display: none;
 }
 
-.loading {
-  width: v-bind(loadingWidth);
-  height: 5px;
-  background-color: rgba(130, 170, 255);
-  position: fixed;
-  top: 50px;
-  left: 0;
-  content: "";
-  z-index: 1000000;
-}
 
 .left::-webkit-scrollbar {
   display: none;

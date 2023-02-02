@@ -2,7 +2,7 @@
   <Transition name="login">
     <login v-if="isShowLogin"></login>
   </Transition>
-  <div class="home_container" @scroll="handleScroll">
+  <div class="home_container">
     <div class="background">
       <typing word="Coisíní's Blog" class="head_title"></typing>
       <img src="../assets/homeBack.jpg" alt="background" class="back_pic">
@@ -121,10 +121,6 @@ onMounted(async () => {
     initCanvas();
   });
 });
-
-
-
-
 
 
 </script>
