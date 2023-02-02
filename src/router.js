@@ -23,6 +23,7 @@ const routes = [
     }
   },
   {
+    name: 'home',
     path: "/home",
     component: home,
     meta:{

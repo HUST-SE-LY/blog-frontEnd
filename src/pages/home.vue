@@ -54,7 +54,7 @@
 </template>
 
 <script setup>
-import { nextTick, onMounted, ref, watch } from 'vue';
+import { nextTick, onActivated, onMounted, ref, watch } from 'vue';
 import typing from '../components/typing.vue';
 import tagList from '../components/tagList.vue';
 import blogList from '../components/blogList.vue';
@@ -66,6 +66,7 @@ import login from '../components/login.vue';
 import { useStore } from 'vuex';
 import { computed } from '@vue/reactivity';
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
+import { init } from 'echarts';
 
 const store = useStore();
 const mainCanvas = ref(null);
@@ -88,6 +89,11 @@ onBeforeRouteLeave((to, from, next) => {
   } else {
     next();
   }
+})
+
+onActivated(() => {
+  console.log('init')
+  initCanvas()
 })
 
 

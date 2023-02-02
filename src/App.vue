@@ -2,11 +2,11 @@
   <headTag></headTag>
   <router-view v-slot="{ Component }">
     <Transition name="fade">
-      <keep-alive>
+      <KeepAlive>
         <component :is="Component"></component>
-      </keep-alive>
-
+      </KeepAlive>
     </Transition>
+
   </router-view>
 </template>
 
@@ -30,20 +30,6 @@ onMounted(async () => {
 </script>
 
 <style scoped>
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-}
-
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-
-.logo.vue:hover {
-  filter: drop-shadow(0 0 2em #42b883aa);
-}
-
 .fade-enter-from,
 .fade-leave-to {
   opacity: 0;
