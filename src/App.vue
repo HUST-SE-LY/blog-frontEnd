@@ -1,8 +1,11 @@
 <template>
   <headTag></headTag>
   <router-view v-slot="{ Component }">
-    <Transition name="fade" >
-      <component :is="Component"></component>
+    <Transition name="fade">
+      <keep-alive>
+        <component :is="Component"></component>
+      </keep-alive>
+
     </Transition>
   </router-view>
 </template>
@@ -20,7 +23,7 @@ onMounted(async () => {
   try {
     await axios.post('/check')
     store.commit('login')
-  } catch(e) {
+  } catch (e) {
     store.commit("logout")
   }
 })
@@ -41,19 +44,18 @@ onMounted(async () => {
   filter: drop-shadow(0 0 2em #42b883aa);
 }
 
-.fade-enter-from, .fade-leave-to{
+.fade-enter-from,
+.fade-leave-to {
   opacity: 0;
 }
 
-.fade-enter-to, .fade-leave-from {
+.fade-enter-to,
+.fade-leave-from {
   opacity: 1;
 }
 
-.fade-enter-active, .fade-leave-active {
+.fade-enter-active,
+.fade-leave-active {
   transition: opacity 0.5s;
 }
-
-
-
-
 </style>

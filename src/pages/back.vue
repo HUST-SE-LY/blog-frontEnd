@@ -55,6 +55,7 @@ function initCanvas() {
 
 watch(() => store.state.darkMode,initCanvas)
 
+
 onMounted(() => {
   initCanvas();
   window.addEventListener('resize', () => {

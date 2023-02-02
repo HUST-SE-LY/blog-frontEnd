@@ -65,7 +65,7 @@ import music from '../components/music.vue';
 import login from '../components/login.vue';
 import { useStore } from 'vuex';
 import { computed } from '@vue/reactivity';
-import { onBeforeRouteLeave } from 'vue-router';
+import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
 
 const store = useStore();
 const mainCanvas = ref(null);
@@ -90,6 +90,7 @@ onBeforeRouteLeave((to, from, next) => {
   }
 })
 
+
 watch(() => store.state.darkMode,initCanvas)
 
 const isShowLogin = computed(() => store.state.showLoginBox);
@@ -113,7 +114,10 @@ onMounted(async () => {
   window.addEventListener('resize', () => {
     initCanvas();
   });
-})
+});
+
+
+
 
 
 
@@ -188,7 +192,7 @@ onMounted(async () => {
   background: rgba(130, 170, 255);
 }
 
-#main_canvas {
+canvas {
   position: absolute;
   top: 0;
   left: 0;
