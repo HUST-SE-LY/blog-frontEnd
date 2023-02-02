@@ -71,16 +71,14 @@ async function changePlayState() {
       }
       handleLyr(lyrResult.data.lrc.lyric)
     }
-    audio.value.addEventListener('canplay', () => {
-      songTime.value = handleSongTime(audio.value.duration);
-      audio.value.play();
-    })
+    audio.value.play();
     playState.value = '暂停';
   }
   else if (playState.value === '暂停') {
     audio.value.pause();
     playState.value = '播放';
   }
+  songTime.value = handleSongTime(audio.value.duration);
 }
 
 async function changePlayList() {
