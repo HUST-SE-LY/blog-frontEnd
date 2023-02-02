@@ -27,7 +27,11 @@
         <linkList></linkList>
         <music></music>
       </div>
+      <div class="bottom">
+        <a href="https://beian.miit.gov.cn/" target="_blank">皖ICP备2023002076</a>
+      </div>
     </div>
+    
   </div>
   <div class="aside">
     <div class="aside_single" :class="tagShow?'show':''">
@@ -116,6 +120,27 @@ onMounted(async () => {
 </script>
 
 <style scoped>
+
+.bottom {
+  width: 200px;
+  text-align: center;
+  position: absolute;
+  bottom: 20px;
+  left: calc(50% - 100px);
+
+}
+
+.bottom a {
+  text-decoration: none;
+  color: v-bind(store.state.darkMode?'#ffffff':'#000000');
+}
+
+
+.bottom a:hover {
+  color: rgba(130, 170, 255,.75);
+}
+
+
 @keyframes movein {
   0% {
     opacity: 0;
