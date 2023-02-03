@@ -78,6 +78,7 @@ onBeforeRouteLeave(() => {
 })
 
 onActivated(async () => {
+  initCanvas();
   if (routes.params.id === currentId.value) {
     left.value.scrollTop = scrollTop.value;
   } else {
