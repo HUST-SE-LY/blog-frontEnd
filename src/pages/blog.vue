@@ -1,7 +1,7 @@
 <template>
   <login v-if="store.state.showLoginBox"></login>
   <div class="container" ref="container">
-    <canvas ref="mainCanvas" class="canvas"></canvas>
+    <canvas ref="mainCanvas" class="canvas" id="mainCanvas"></canvas>
     <div :class="`left ${store.state.darkMode ? 'dark_background' : ''}`" ref="left">
       <titleHead :class="`${store.state.darkMode ? 'dark' : ''}`">正文</titleHead>
       <loading v-if="isLoading"></loading>
@@ -24,7 +24,6 @@ import titleHead from '../components/titleHead.vue';
 import loading from '../components/loading.vue';
 import login from '../components/login.vue';
 import { useStore } from 'vuex';
-import router from '../router';
 
 
 const left = ref(null);
@@ -35,7 +34,6 @@ const store = useStore();
 const axios = useAxios();
 const routes = useRoute()
 const content = ref("");
-const loadingWidth = ref(0);
 const mainCanvas = ref(null);
 const container = ref(null);
 const main = ref(null);
@@ -111,7 +109,7 @@ function initCanvas() {
     compose: "source-over",
     bubbles: 30,
     bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode ? 190 : 0)}, 100%, 50%, .3)`,
-    canvas: mainCanvas.value, // default is created and attached// default is 4 + Math.random() * width / 25
+    canvas: document.getElementById('mainCanvas'), // default is created and attached// default is 4 + Math.random() * width / 25
   });
 }
 
