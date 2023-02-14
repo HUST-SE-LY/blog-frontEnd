@@ -267,7 +267,7 @@ a:hover {
 
 
 .left::-webkit-scrollbar {
-  width: 2px;
+  width: 4px;
   background: transparent;
 }
 
