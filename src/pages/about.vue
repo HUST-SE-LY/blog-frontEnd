@@ -28,28 +28,6 @@ const container = ref(null);
 const mainCanvas = ref(null);
 const store = useStore();
 
-watch(() => store.state.darkMode,initCanvas)
-
-function initCanvas() {
-  mainCanvas.value.width = container.value.offsetWidth;
-  mainCanvas.value.height = container.value.offsetHeight;
-  bubbly({
-    colorStart: `${store.state.darkMode?'#000000':'#ffffff'}`,
-    colorStop: `${store.state.darkMode?'#000000':'#ffffff'}`,
-    blur: 1,
-    compose: "source-over",
-    bubbles: 30,
-    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode?190:0)}, 100%, 50%, .3)`,
-    canvas: document.getElementById("main_canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
-  });
-}
-
-onMounted(() => {
-  initCanvas();
-  window.addEventListener('resize', () => {
-    initCanvas();
-  })
-})
 
 
 </script>
@@ -60,6 +38,7 @@ onMounted(() => {
   height: 100vh;
   padding-top: 100px;
   box-sizing: border-box;
+  background: v-bind(store.state.darkMode?'#000000':'#f6f6f6');
 }
 .link_box {
   display: flex;

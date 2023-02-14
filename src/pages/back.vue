@@ -39,29 +39,6 @@ const mainCanvas = ref(null);
 const router = useRouter();
 const store = useStore();
 
-function initCanvas() {
-  mainCanvas.value.width = container.value.offsetWidth;
-  mainCanvas.value.height = container.value.offsetHeight;
-  bubbly({
-    colorStart: `${store.state.darkMode?'#000000':'#ffffff'}`,
-    colorStop: `${store.state.darkMode?'#000000':'#ffffff'}`,
-    blur: 1,
-    compose: "source-over",
-    bubbles: 30,
-    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode?190:0)}, 100%, 50%, .3)`,
-    canvas: document.getElementById("main_canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
-  });
-}
-
-watch(() => store.state.darkMode,initCanvas)
-
-
-onMounted(() => {
-  initCanvas();
-  window.addEventListener('resize', () => {
-    initCanvas();
-  })
-})
 </script>
 
 <style scoped>
@@ -95,7 +72,7 @@ onMounted(() => {
   padding: 100px 50px;
   gap: 20px;
   overflow: hidden;
-  background-color: v-bind(store.state.darkMode?'#000000':'#ffffff');
+  background: v-bind(store.state.darkMode?'#000000':'#f6f6f6');
 }
 
 .music:hover {

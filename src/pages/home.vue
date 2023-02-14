@@ -91,35 +91,8 @@ onBeforeRouteLeave((to, from, next) => {
   }
 })
 
-onActivated(() => {
-  initCanvas()
-})
-
-
-watch(() => store.state.darkMode,initCanvas)
 
 const isShowLogin = computed(() => store.state.showLoginBox);
-
-function initCanvas() {
-  mainCanvas.value.width = main.value.offsetWidth;
-  mainCanvas.value.height = main.value.offsetHeight;
-  bubbly({
-    colorStart: `${store.state.darkMode?'#000000':'#ffffff'}`,
-    colorStop: `${store.state.darkMode?'#000000':'#ffffff'}`,
-    blur: 1,
-    compose: "source-over",
-    bubbles: 30,
-    bubbleFunc: () => `hsla(${Math.random() * 50 + (store.state.darkMode?190:0)}, 100%, 50%, .3)`,
-    canvas: document.getElementById("main_canvas"), // default is created and attached// default is 4 + Math.random() * width / 25
-  });
-}
-
-onMounted(async () => {
-  initCanvas();
-  window.addEventListener('resize', () => {
-    initCanvas();
-  });
-});
 
 
 </script>
@@ -222,7 +195,7 @@ canvas {
 .home_main {
   height: 92vh;
   position: relative;
-  background: v-bind(store.state.darkMode?'#000000':'#ffffff');
+  background: v-bind(store.state.darkMode?'#000000':'#f6f6f6');
   z-index: 1000;
   box-sizing: border-box;
   display: grid;
@@ -266,7 +239,7 @@ canvas {
 
 .left, .right_container{
   max-height: calc(100%);
-  padding: 5px 10px;
+  padding: 5px 20px;
   overflow-y: scroll;
   box-sizing: border-box;
 }
