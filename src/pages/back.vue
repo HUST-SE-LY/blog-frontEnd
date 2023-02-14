@@ -1,6 +1,5 @@
 <template>
   <div ref="container" class="back_container">
-    <canvas ref="mainCanvas" class="canvas" id="main_canvas"></canvas>
     <div class="left" v-if="store.state.isLogin">
       <setSelf></setSelf>
       <music class="music"></music>

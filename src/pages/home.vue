@@ -12,7 +12,6 @@
     </div>
     <img src="../assets/homeBack.jpg" alt="background" class="back_pic pic">
     <div class="home_main" id="main" ref="main">
-      <canvas id="main_canvas" ref="mainCanvas"></canvas>
       <div class="left">
         <tagList></tagList>
         <searchBar></searchBar>
@@ -66,10 +65,8 @@ import login from '../components/login.vue';
 import { useStore } from 'vuex';
 import { computed } from '@vue/reactivity';
 import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
-import { init } from 'echarts';
 
 const store = useStore();
-const mainCanvas = ref(null);
 const main = ref(null)
 const width = ref("");
 const height = ref("");

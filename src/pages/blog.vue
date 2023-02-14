@@ -1,7 +1,6 @@
 <template>
   <login v-if="store.state.showLoginBox"></login>
   <div class="container" ref="container">
-    <canvas ref="mainCanvas" class="canvas" id="mainCanvas"></canvas>
     <div :class="`left ${store.state.darkMode ? 'dark_background' : ''}`" ref="left">
       <titleHead :class="`${store.state.darkMode ? 'dark' : ''}`">正文</titleHead>
       <loading v-if="isLoading"></loading>
@@ -35,7 +34,6 @@ const store = useStore();
 const axios = useAxios();
 const routes = useRoute()
 const content = ref("");
-const mainCanvas = ref(null);
 const container = ref(null);
 const main = ref(null);
 const menu = ref([]);
@@ -269,7 +267,13 @@ a:hover {
 
 
 .left::-webkit-scrollbar {
-  display: none;
+  width: 2px;
+  background: transparent;
+}
+
+.left::-webkit-scrollbar-thumb {
+  background-color: rgba(130, 170, 255);
+  border-radius: 2px;
 }
 
 .left:hover {

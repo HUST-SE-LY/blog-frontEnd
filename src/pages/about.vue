@@ -1,6 +1,5 @@
 <template>
   <div ref="container" :class="`container`">
-    <canvas ref="mainCanvas" id="main_canvas"></canvas>
     <div class="box">
       <h1 :class="`${store.state.darkMode?'dark':''}`">技术栈</h1>
       <div class="link_box has_back">
