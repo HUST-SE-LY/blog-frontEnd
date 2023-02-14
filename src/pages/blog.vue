@@ -12,7 +12,7 @@
       <a target="" v-for="title in menu" :href="`#${title.id}`" :class="title.style">{{ title.value }}</a>
     </div>
   </div>
-  <l2d class="l2d"></l2d>
+  <l2d class="l2d" :key="key"></l2d>
 </template>
 
 <script setup>
@@ -27,6 +27,7 @@ import { useStore } from 'vuex';
 
 
 const left = ref(null);
+const key = ref(0);
 const scrollTop = ref(0);
 const currentId = ref(0);
 const isLoading = ref(false);
@@ -72,6 +73,7 @@ onBeforeRouteLeave(() => {
 })
 
 onActivated(async () => {
+  key.value++;
   if (routes.params.id === currentId.value) {
     left.value.scrollTop = scrollTop.value;
   } else {
