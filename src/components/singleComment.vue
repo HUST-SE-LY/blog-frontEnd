@@ -5,13 +5,21 @@
       <div>
         <p class="name">{{commentInfo.name}}</p>
       </div>
-      <p class="date">2022-11-22</p>
+      <p class="date">{{commentInfo.date}}</p>
     </div>
-    <div class="content">{{commentInfo.content}}</div>
+    <div class="content">
+      <div>{{commentInfo.content}}</div>
+      <div v-if="store.state.isLogin" class="delete" @click="deleteComment">删除</div>
+    </div>
   </div>
 </template>
 
 <script setup>
+import { useStore } from 'vuex';
+import useAxios from '../composables/useAxios';
+
+const axios = useAxios();
+const store = useStore();
 const props = defineProps(['commentInfo']);
 const avatarColor = getAvatarColor();
 function getAvatarColor() {
@@ -19,6 +27,13 @@ function getAvatarColor() {
   const b = Math.floor(Math.random()*257);
   const g = Math.floor(Math.random()*257);
   return `rgba(${r},${g},${b},0.5)`;
+}
+async function deleteComment() {
+  const id = props.commentInfo.id;
+  await axios.post('/delete/comment',{
+    id: id,
+  })
+  
 }
 </script>
 
@@ -57,11 +72,28 @@ function getAvatarColor() {
 }
 
 .content {
+  display: flex;
   margin-top: 10px;
   line-height: 1.6em;
   word-wrap: break-word;
   word-break: break-all;
 }
+
+.delete {
+  margin-left: auto;
+  padding: 5px 20px;
+  font-size: 14px;
+  line-height: 1em;
+  border-radius: 40px;
+  border: rgba(130, 170, 255) 1px solid;
+  cursor: pointer;
+}
+
+.delete:hover {
+  border-color: brown;
+}
+
+
 
 
 
