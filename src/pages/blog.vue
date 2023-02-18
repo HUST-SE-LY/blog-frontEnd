@@ -10,6 +10,7 @@
       <titleHead :class="`${store.state.darkMode ? 'dark' : ''}`">目录</titleHead>
       <a target="" v-for="title in menu" :href="`#${title.id}`" :class="title.style">{{ title.value }}</a>
     </div>
+    <comments :key="key"></comments>
   </div>
   <l2d class="l2d" :key="key"></l2d>
 </template>
@@ -17,7 +18,8 @@
 <script setup>
 import { nextTick, onActivated, onMounted, ref, watch } from 'vue';
 import { onBeforeRouteLeave, useRoute } from 'vue-router';
-import l2d from '../components/l2d.vue'
+import l2d from '../components/l2d.vue';
+import comments from '../components/comments.vue';
 import useAxios from '../composables/useAxios';
 import titleHead from '../components/titleHead.vue';
 import loading from '../components/loading.vue';
@@ -218,9 +220,7 @@ a:hover {
   gap: 20px;
   scale: 1;
   position: relative;
-  height: 100vh;
   box-sizing: border-box;
-  overflow: hidden;
   background: v-bind(store.state.darkMode?'#000000':'#f6f6f6');
 }
 
@@ -392,6 +392,11 @@ a:hover {
 
 .main:deep(img):hover {
   border-radius: 0px;
+}
+
+.main:deep(a) {
+  color: rgba(130, 170, 255);
+  text-decoration: none;
 }
 
 @media screen and (max-width:800px) {
