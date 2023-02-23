@@ -12,12 +12,17 @@
           <input type="text" class="tag_input" placeholder="回车键添加" v-model="tagName" @keyup.enter="addTag">
         </div>
       </div>
+      <div class="note" v-for="note in noteList" v-if="isUpdating">
+        <p class="note_content">{{ note.content }}</p>
+        <div class="update delete" @click="deleteNote(note.id)">删除</div>
+      </div>
       <div class="left_bottom">
         <div class="update" v-if="isUpdating" @click="blogInput.click()">{{ blogState }}</div>
         <div class="update" v-if="isUpdating" @click="pictureInput.click()">{{ pictureState }}</div>
         <input type="file" ref="blogInput" style="display:none" accept=".md" @change="blogState = '已选择博客'">
         <input type="file" ref="pictureInput" style="display:none" accept="image/*" @change="pictureState = '已选择封面'">
       </div>
+
     </div>
     <div class="right">
       <div class="update" @click="changeState">{{ isUpdating?'保存': '修改' }}</div>
@@ -27,6 +32,7 @@
 </template>
 
 <script setup>
+import { getConstantType } from '@vue/compiler-core';
 import { onMounted, ref } from 'vue';
 import { useStore } from 'vuex';
 import useAxios from '../composables/useAxios';
@@ -45,6 +51,9 @@ const isUpdating = ref(false);
 const isTagging = ref(false);
 const tagName = ref("");
 const store = useStore();
+const noteList = ref([]);
+
+
 
 async function changeState() {
   if (isUpdating.value) {
@@ -93,11 +102,28 @@ async function deleteBlog() {
 
 onMounted(async () => {
   const id = props.blogInfo.id;
-  const result = await axios.post("/get/blogTag", {
+  let result = await axios.post("/get/blogTag", {
     id: id,
   })
   tags.value = result.data.tags;
+  getNotes();
+
 })
+
+async function getNotes() {
+  const result = await axios.post('/get/note',{
+    id: props.blogInfo.id,
+  });
+  noteList.value = result.data.list;
+}
+
+async function deleteNote(id) {
+  await axios.post('/delete/note',{
+    id: id,
+  })
+  noteList.value = [];
+  getNotes();
+}
 </script>
 
 <style scoped>
@@ -184,5 +210,22 @@ input {
 .delete:hover {
   background-color: rgba(231, 173, 172, 1);
   border: 1px solid rgba(231, 173, 172, 1);
+}
+
+.note {
+  display: flex;
+  align-items: center;
+}
+
+.note_content {
+  display: block;
+  overflow: hidden;
+  text-overflow:ellipsis;
+  white-space: nowrap;
+  width: 200px;
+}
+
+.note .update {
+  margin-left: auto;
 }
 </style>

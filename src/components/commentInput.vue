@@ -8,7 +8,7 @@
       <textarea maxlength="500" v-model="content" placeholder="评论内容..." :style="store.state.darkMode?`background-color:#242424;color:white;`:'background-color:#f6f8fa;color:black;'"></textarea>
     </div>
     <div class="button" @click="addComment">发送</div>
-    <toast v-if="showToast">评论成功，刷新后查看</toast>
+    <toast v-if="showToast">{{toastInfo}}</toast>
   </div>
 </template>
 
@@ -27,8 +27,17 @@ const store = useStore();
 const name = ref("");
 const content = ref(""); 
 const showToast = ref(false);
+const toastInfo = ref('评论成功，刷新后查看');
 
 async function addComment() {
+  if(!name.value||!content.value) {
+    toastInfo.value = '昵称或评论内容不能为空';
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    },3000)
+    return ;
+  }
   const result = await axios.post('/comment/add',{
     name: name.value,
     content: content.value,
@@ -37,6 +46,7 @@ async function addComment() {
   if(result.status == 200) {
     name.value = '';
     content.value = '';
+    toastInfo.value = '评论成功，刷新后查看'
     showToast.value = true;
     setTimeout(() => {
       showToast.value = false;

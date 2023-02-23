@@ -12,7 +12,6 @@
       <h1 :class="`${store.state.darkMode?'dark':''}`">引用</h1>
       <div class="link_box">
         <a href="https://github.com/imuncle/live2d" target="_blank" :class="`${store.state.darkMode?'dark':''}`">live2d看板</a>
-        <a href="https://github.com/tipsy/bubbly-bg" target="_blank" :class="`${store.state.darkMode?'dark':''}`">背景动态气泡</a>
         <a href="https://neteasecloudmusicapi.vercel.app/#/" :class="`${store.state.darkMode?'dark':''}`">音乐接口提供</a>
       </div>
     </div>

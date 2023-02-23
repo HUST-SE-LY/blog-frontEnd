@@ -4,15 +4,26 @@
     <div :class="`left ${store.state.darkMode ? 'dark_background' : ''}`" ref="left">
       <titleHead :class="`${store.state.darkMode ? 'dark' : ''}`">正文</titleHead>
       <loading v-if="isLoading"></loading>
-      <div v-html="content" :class="`main ${store.state.darkMode ? 'dark' : ''}`" ref="main"></div>
+      <div v-html="content" :class="`main ${store.state.darkMode ? 'dark' : ''}`" ref="main" @mouseup="getSelect"></div>
     </div>
     <div :class="`right ${store.state.darkMode ? 'dark_background' : ''}`">
+      <div :class="noteMode ? 'noteMode modeOn' : 'noteMode'" @click="openNote">批注模式</div>
       <titleHead :class="`${store.state.darkMode ? 'dark' : ''}`">目录</titleHead>
       <a target="" v-for="title in menu" :href="`#${title.id}`" :class="title.style">{{ title.value }}</a>
     </div>
     <comments :key="key"></comments>
   </div>
   <l2d class="l2d" :key="key"></l2d>
+  <div :class="`note_box_container ${store.state.darkMode ? 'dark_background' : ''}`" ref="noteContainer"
+    v-show="showNoteBox">
+    <div class="input_box">
+      <p :class="isFocus ? 'p_focus' : (note ? '' : 'p_origin')">添加批注</p>
+      <input type="text" v-model="note" :class="isFocus ? 'input_focus' : ''" @focusin.prevent="isFocus = true"
+        @focusout.prevent="isFocus = false" @keyup.enter="addNote">
+    </div>
+  </div>
+  <div ref="noteBox" v-show="showNoteInfo" class="note_box_container">{{ noteContent }}</div>
+  <toast v-if="showToast">{{ toastInfo }}</toast>
 </template>
 
 <script setup>
@@ -24,11 +35,13 @@ import useAxios from '../composables/useAxios';
 import titleHead from '../components/titleHead.vue';
 import loading from '../components/loading.vue';
 import login from '../components/login.vue';
+import toast from '../components/toast.vue';
 import { useStore } from 'vuex';
 
 
 const left = ref(null);
 const key = ref(0);
+let doms = [];
 const scrollTop = ref(0);
 const currentId = ref(0);
 const isLoading = ref(false);
@@ -39,7 +52,25 @@ const content = ref("");
 const container = ref(null);
 const main = ref(null);
 const menu = ref([]);
-const tags = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6']
+const tags = ['H1', 'H2', 'H3', 'H4', 'H5', 'H6'];
+const noteMode = ref(false);
+const noteContainer = ref(null);
+const isFocus = ref(false);
+const note = ref("");
+const selectWord = ref("");
+const noteBox = ref(null);
+let noteid = null;
+let parentNode = null;
+let range = null;
+let crossTag = 0;
+let start = 0;
+let end = 0;
+const toastInfo = ref('');
+const showToast = ref(false);
+const showNoteBox = ref(false);
+const showNoteInfo = ref(false);
+const noteContent = ref("")
+
 onMounted(async () => {
   isLoading.value = true;
   const id = routes.params.id;
@@ -50,9 +81,23 @@ onMounted(async () => {
   content.value = result.data.html;
   isLoading.value = false;
   await nextTick();
-  const doms = main.value.children;
-  createTree(doms)
+  doms = main.value.children;
+  createTree(doms);
+  getNotes()
 })
+
+function openNote() {
+  if (store.state.isLogin) {
+    noteMode.value = !noteMode.value;
+  } else {
+    showToast.value = true;
+    toastInfo.value = '只有管理员才能批注哦'
+    setTimeout(() => {
+      showToast.value = false;
+    }, 3000)
+  }
+}
+
 
 function createTree(doms) {
   menu.value = [];
@@ -64,7 +109,109 @@ function createTree(doms) {
         id: doms[i].id,
       })
     }
+    if (!doms[i].id) {
+      doms[i].id = i;
+    }
   }
+  const codes = document.getElementsByTagName('code');
+  for (let i = 0; i < codes.length; i++) {
+    codes[i].id = `code_${i}`
+  }
+}
+
+async function getNotes() {
+  const result = await axios.post('/get/note', {
+    id: routes.params.id,
+  })
+  console.log(result.data.list);
+  const list = result.data.list;
+  for (let i = 0; i < list.length; i++) {
+    const parentNode = document.getElementById(list[i].nodeid);
+    let current = parentNode.firstChild;
+    for(let j = 0; j < list[i].crossLen; j++) {
+      console.log(current)
+      current = current.nextSibling;
+    }
+    console.log(current)
+    const need = current.data.slice(list[i].start, list[i].end);
+    current.splitText(list[i].start);
+    current.nextSibling.splitText(list[i].end - list[i].start);
+    const needToDel = current.nextSibling;
+    const span = document.createElement("span");
+    span.className = 'note';
+    span.innerText = need;
+    span.onmouseenter = ((e) => { showNote(list[i].content, e) });
+    span.onmouseleave = hideNote;
+    parentNode.insertBefore(span, needToDel)
+    parentNode.removeChild(needToDel);
+
+  }
+}
+
+function showNote(content, e) {
+  noteContent.value = content;
+  showNoteInfo.value = true;
+  noteBox.value.style.left = e.clientX - 50 + "px";
+  noteBox.value.style.top = e.clientY - 90 + "px";
+}
+
+function hideNote() {
+  showNoteInfo.value = false;
+}
+function getSelect(e) {
+  range = window.getSelection().getRangeAt(0);
+  const selection = window.getSelection();
+  if (selection.toString() === selectWord.value) {
+    return;
+  }
+  showNoteBox.value = false;
+  if (noteid) {
+    const notedElement = document.querySelector('.noted_span');
+    while (notedElement.firstChild) {
+      const removed = notedElement.removeChild(notedElement.firstChild)
+      parentNode.insertBefore(removed, notedElement)
+    }
+    parentNode.removeChild(notedElement);
+    parentNode.normalize();
+    noteid = null;
+  }
+  if (!noteMode.value) {
+    return;
+  }
+  selectWord.value = document.getSelection().toString();
+  if (selectWord.value.length) {
+    crossTag = 0;
+    start = range.startOffset;
+    end = range.endOffset;
+    noteContainer.value.style.left = e.clientX - 20 + "px";
+    noteContainer.value.style.top = e.clientY - 110 + "px";
+    if (range.startContainer === range.endContainer) {
+      const span = document.createElement('span');
+      parentNode = range.startContainer.parentNode;
+      let current = parentNode.firstChild;
+      while(current !== range.startContainer) {
+        crossTag++;
+        current = current.nextSibling;
+      }
+      span.className = 'noted_span';
+      range.surroundContents(span);
+      showNoteBox.value = true;
+      if (end - start === selectWord.value.length) {
+        noteid = range.startContainer.id;
+      }
+    }
+  }
+}
+
+async function addNote() {
+  const result = await axios.post('/set/note', {
+    start: start,
+    end: end,
+    nodeid: noteid,
+    content: note.value,
+    blogid: routes.params.id,
+    cross: crossTag,
+  })
 }
 
 onBeforeRouteLeave(() => {
@@ -87,6 +234,7 @@ onActivated(async () => {
     await nextTick();
     const doms = main.value.children;
     createTree(doms);
+    getNotes()
   }
 
 })
@@ -137,6 +285,83 @@ onBeforeRouteLeave((to, from, next) => {
     opacity: 1;
   }
 
+}
+
+@keyframes shine {
+  0% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1
+  }
+
+  ;
+}
+
+.noteMode {
+  margin-bottom: 20px;
+}
+
+.note_box_container {
+  border-radius: 15px;
+  animation: movein 0.5s forwards;
+  height: fit-content;
+  padding: 20px;
+  background-color: v-bind(store.state.darkMode ? 'rgba(35,35,35)' : 'rgba(255,255,255');
+  color: v-bind(store.state.darkMode ? 'white' : 'black');
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s;
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  z-index: 1000;
+}
+
+
+.input_box input {
+  width: 100%;
+  border: none;
+  border-bottom: 1px solid gray;
+  outline: none;
+  background-color: transparent;
+  height: 24px;
+  transition: all 0.3s;
+  font-size: 14px;
+  color: v-bind(store.state.darkMode ? 'white' : 'black');
+}
+
+.input_box p {
+  font-size: 12px;
+  transition: all 0.3s;
+  pointer-events: none;
+  height: 18px;
+  line-height: 20px;
+}
+
+.input_box .p_origin {
+  font-size: 14px;
+  transform: translateY(20px);
+}
+
+.input_box .input_focus {
+  border-bottom: 1px solid rgba(130, 170, 255);
+}
+
+.input_box .p_focus {
+  color: rgba(130, 170, 255);
+}
+
+.noteMode {
+  cursor: pointer;
+}
+
+.modeOn {
+  color: rgba(130, 170, 255);
 }
 
 
@@ -221,7 +446,7 @@ a:hover {
   scale: 1;
   position: relative;
   box-sizing: border-box;
-  background: v-bind(store.state.darkMode?'#000000':'#f6f6f6');
+  background: v-bind(store.state.darkMode ? '#000000' : '#f6f6f6');
 }
 
 .canvas {
@@ -289,6 +514,10 @@ a:hover {
   overflow-x: scroll;
   margin-top: 20px;
   margin-bottom: 20px;
+}
+
+.main:deep(.note) {
+  background-color: rgba(30, 170, 255, 0.3);
 }
 
 
@@ -397,6 +626,11 @@ a:hover {
 .main:deep(a) {
   color: rgba(130, 170, 255);
   text-decoration: none;
+}
+
+.main:deep(.noted_span) {
+  border-bottom: 3px dashed rgba(130, 170, 255);
+
 }
 
 @media screen and (max-width:800px) {

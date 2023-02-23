@@ -94,6 +94,6 @@ img {
   height: 16px;
   position: absolute;
   top: 1px;
-  left: 2px;
+  left: 2px; 
 }
 </style>
