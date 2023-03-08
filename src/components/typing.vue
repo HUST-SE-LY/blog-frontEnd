@@ -13,10 +13,11 @@ import { onMounted, ref, watch } from 'vue';
 
 const letterList = ref([]);
 const props = defineProps(['word']);
+let interval;
 onMounted(() => {
   const arr = props.word.split("");
   let i = 0;
-  const interval = setInterval(() => {
+  interval = setInterval(() => {
     letterList.value.push(arr[i]);
     i++;
     if (i === arr.length) {
@@ -26,10 +27,13 @@ onMounted(() => {
 })
 
 watch(() => props.word,(newVal,oldVal) =>{
-  letterList.value = []
+  letterList.value = [];
+  if(interval) {
+    clearInterval(interval)
+  }
   const arr = props.word.split("");
   let i = 0;
-  const interval = setInterval(() => {
+  interval = setInterval(() => {
     letterList.value.push(arr[i]);
     i++;
     if (i === arr.length) {
