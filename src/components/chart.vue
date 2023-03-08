@@ -10,7 +10,6 @@ import * as echarts from 'echarts';
 import useAxios from '../composables/useAxios';
 import { onMounted, ref, watch } from 'vue';
 import { useStore } from 'vuex';
-import { parserOptions } from '@vue/compiler-dom';
 const store = useStore();
 
 let chart;
@@ -59,12 +58,15 @@ onMounted(async () => {
     },
     tooltip: {},
     visualMap: {
-      min: 0,
-      max: 5,
       type: 'piecewise',
+      categories: [0,1,2,3,4,5],
+      max: 5,
       orient: 'horizontal',
       left: 'center',
       top: 30,
+      inRange: {
+        color: [store.state.darkMode?'#363636':'#ebedf0','#9be9a8','#40c463','#30a14e','#216e39','#115e24'],
+      },
     },
     calendar: {
       top: 80,
@@ -94,6 +96,7 @@ onMounted(async () => {
 watch(() => store.state.darkMode, () => {
   chart.dispose()
   option.backgroundColor = store.state.darkMode ? '#1a1a1a' : '#ffffff';
+  option.visualMap.inRange.color[0] = store.state.darkMode?'#363636':'#ebedf0'
   chart = echarts.init(calendar, store.state.darkMode ? 'dark' : 'light');
   chart.setOption(option);
 })
