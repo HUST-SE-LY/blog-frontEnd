@@ -1,10 +1,9 @@
 <template>
-  <toast v-if="showToast">密码错误</toast>
   <div :class="`login_container ${store.state.darkMode ? 'dark_background' : ''}`">
     <p class="close" @click="store.commit('closeLogin')">关闭</p>
     <titleHead>登录</titleHead>
     <div class="input_box">
-      <p :class="isFocus?'p_focus':(password?'':'p_origin')">密码</p>
+      <p :class="isFocus?'p_focus':(password?'':'p_origin')">{{titleWord}}</p>
       <input type="password" v-model="password" :class="isFocus?'input_focus':''" @focusin="isFocus = true" @focusout="isFocus = false">
       <div class="button" @click="login">登录</div>
     </div>
@@ -21,7 +20,7 @@ const axios = useAxios();
 const store = useStore();
 const isFocus = ref(false);
 const password = ref("");
-const showToast = ref(false);
+const titleWord = ref("密码")
 async function login() {
   const result = await axios.post('/login',{
     password: password.value,
@@ -32,10 +31,8 @@ async function login() {
     store.commit('login');
     store.commit('closeLogin');
   } else {
-    showToast.value = true;
-    setTimeout(() => {
-      showToast.value = false;
-    },5000)
+    password.value = '';
+    titleWord.value = '密码错误，请重新输入'
   }
 }
 </script>

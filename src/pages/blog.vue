@@ -123,16 +123,13 @@ async function getNotes() {
   const result = await axios.post('/get/note', {
     id: routes.params.id,
   })
-  console.log(result.data.list);
   const list = result.data.list;
   for (let i = 0; i < list.length; i++) {
     const parentNode = document.getElementById(list[i].nodeid);
     let current = parentNode.firstChild;
     for(let j = 0; j < list[i].crossLen; j++) {
-      console.log(current)
       current = current.nextSibling;
     }
-    console.log(current)
     const need = current.data.slice(list[i].start, list[i].end);
     current.splitText(list[i].start);
     current.nextSibling.splitText(list[i].end - list[i].start);
@@ -144,7 +141,6 @@ async function getNotes() {
     span.onmouseleave = hideNote;
     parentNode.insertBefore(span, needToDel)
     parentNode.removeChild(needToDel);
-
   }
 }
 

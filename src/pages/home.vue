@@ -1,16 +1,22 @@
 <template>
   <Transition name="login">
-    <login v-if="isShowLogin"></login>
+      <login v-if="isShowLogin"></login>
   </Transition>
   <div class="home_container">
     <div class="background">
       <typing word="Coisíní's Blog" class="head_title"></typing>
-      <img src="../assets/homeBack.jpg" alt="background" class="back_pic">
+      <Transition name="fade" mode="out-in" >
+        <img src="../assets/homeBack.jpg" alt="background" class="back_pic" v-if="!store.state.darkMode">
+        <img src="../assets/homeBackDark.jpg" alt="background" class="back_pic" v-else>
+      </Transition>
       <div class="wrap"></div>
       <div class="title">Coisíní's Blog</div>
-      <typing word="縱有疾風起，人生不言棄" class="sub_title"></typing>
+      <typing :word="store.state.darkMode?'饮月为酒，点星为灯':'縱有疾風起，人生不言棄'" class="sub_title"></typing>
     </div>
-    <img src="../assets/homeBack.jpg" alt="background" class="back_pic pic">
+    <Transition name="fade" mode="out-in" >
+      <img src="../assets/homeBack.jpg" alt="background" class="back_pic pic" v-if="!store.state.darkMode">
+      <img src="../assets/homeBackDark.jpg" alt="background" class="back_pic pic" v-else>
+    </Transition>
     <div class="home_main" id="main" ref="main">
       <div class="left">
         <tagList></tagList>
@@ -76,6 +82,7 @@ const linkShow = ref(false);
 const searchShow = ref(false);
 
 
+
 onBeforeRouteLeave((to, from, next) => {
   if (to.path === '/back') {
     if (store.state.isLogin) {
@@ -95,6 +102,21 @@ const isShowLogin = computed(() => store.state.showLoginBox);
 </script>
 
 <style scoped>
+
+.fade-enter-from,
+.fade-leave-to {
+  opacity: 0.5;
+}
+
+.fade-enter-to,
+.fade-leave-from {
+  opacity: 1;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.3s;
+}
 
 .bottom {
   width: 200px;
@@ -172,6 +194,7 @@ canvas {
 }
 
 .background {
+  background-color: v-bind(store.state.darkMode?'#000000':'#f6f6f6');;
   width: 100%;
   height: fit-content;
   position: fixed;
@@ -208,7 +231,7 @@ canvas {
 
 .wrap {
   pointer-events: none;
-  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.3), rgba(0, 0, 0, v-bind(store.state.darkMode?0.5:0)));
+  background: rgba(0,0,0,0.2);
   position: absolute;
   top: 0;
   left: 0;

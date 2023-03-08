@@ -9,11 +9,24 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 
 const letterList = ref([]);
 const props = defineProps(['word']);
 onMounted(() => {
+  const arr = props.word.split("");
+  let i = 0;
+  const interval = setInterval(() => {
+    letterList.value.push(arr[i]);
+    i++;
+    if (i === arr.length) {
+      clearInterval(interval);
+    }
+  }, 300)
+})
+
+watch(() => props.word,(newVal,oldVal) =>{
+  letterList.value = []
   const arr = props.word.split("");
   let i = 0;
   const interval = setInterval(() => {
