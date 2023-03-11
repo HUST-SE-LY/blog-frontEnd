@@ -93,11 +93,19 @@ onActivated(async () => {
   .link_box {
     grid-template-columns: 1fr 1fr 1fr;
   }
+
+  .title {
+    font-size: 42px;
+  }
 }
 
 @media screen and (max-width:900px) {
   .link_box {
     grid-template-columns: 1fr 1fr;
+  }
+
+  .title {
+    font-size: 36px;
   }
 }
 
@@ -106,7 +114,23 @@ onActivated(async () => {
     grid-template-columns: 1fr;
   }
 
-  
+  .title {
+    font-size: 24px;
+  }
+
+
+}
+
+@media screen and (max-height: 1000px) {
+  .title {
+    top: 250px;
+  }
+}
+
+@media screen and (max-height: 800px) {
+  .title {
+    top: 200px;
+  }
 }
 
 
