@@ -41,6 +41,7 @@ async function deleteLink() {
 .single_friend_container {
   display: flex;
   align-items: center;
+  margin-bottom: 10px;
 }
 
 .right {
