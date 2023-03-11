@@ -6,7 +6,6 @@
         <component :is="Component"></component>
       </KeepAlive>
     </Transition>
-
   </router-view>
 </template>
 

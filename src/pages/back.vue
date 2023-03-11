@@ -2,6 +2,7 @@
   <div ref="container" class="back_container">
     <div class="left" v-if="store.state.isLogin">
       <setSelf></setSelf>
+      <manageFriend></manageFriend>
       <music class="music"></music>
     </div>
     <div class="center" v-if="store.state.isLogin">
@@ -30,6 +31,7 @@ import setTag from '../components/setTag.vue';
 import setLink from '../components/setLink.vue';
 import uploadBlog from '../components/uploadBlog.vue';
 import manageBlog from '../components/manageBlog.vue';
+import manageFriend from '../components/manageFriend.vue';
 import l2d from '../components/l2d.vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';

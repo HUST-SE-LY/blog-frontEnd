@@ -2,6 +2,7 @@
   <div class="head_container">
     <router-link to="/home" class="link">首页</router-link>
     <router-link to="/back" class="link">后台</router-link>
+    <router-link to="/friends" class="link">友链</router-link>
     <div class="right">
       <div class="button" v-if="!isLogin" @click="store.commit('showLogin')">登录</div>
       <div class="avatar" v-else></div>

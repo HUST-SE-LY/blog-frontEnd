@@ -1,5 +1,5 @@
 <template>
-  <div ref="container" :class="`container`">
+  <div ref="container" class="container">
     <div class="box">
       <h1 :class="`${store.state.darkMode?'dark':''}`">技术栈</h1>
       <div class="link_box has_back">

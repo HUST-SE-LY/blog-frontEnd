@@ -9,6 +9,7 @@ const home = () => {return import('./pages/home.vue')};
 const blog = () => {return import('./pages/blog.vue')};
 const back = () => {return import('./pages/back.vue')};
 const about = () => {return import('./pages/about.vue')};
+const friendLink = () => { return import('./pages/friendLink.vue')}
 
 const routes = [
   {
@@ -41,6 +42,12 @@ const routes = [
     component: about,
     meta: {
       title: '关于本站'
+    }
+  },{
+    path:'/friends',
+    component: friendLink,
+    meta: {
+      title: '友链'
     }
   }
 ]
