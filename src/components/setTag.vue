@@ -6,7 +6,7 @@
     </div>
     <div class="input_box">
       <p :class="isFocus?'p_focus':(tagName?'':'p_origin')">标签名</p>
-      <input type="text" v-model="tagName" :class="isFocus?'input_focus':''" @focusin="isFocus = true" @focusout="isFocus = false">
+      <input type="text" @keyup.enter="addTag" v-model="tagName" :class="isFocus?'input_focus':''" @focusin="isFocus = true" @focusout="isFocus = false">
       <span class="add_button" @click="addTag">添加</span>
     </div>
   </div>
