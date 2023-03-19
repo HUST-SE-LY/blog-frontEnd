@@ -4,7 +4,7 @@
     <div :class="`left ${store.state.darkMode ? 'dark_background' : ''}`" ref="left">
       <titleHead :class="`${store.state.darkMode ? 'dark' : ''}`">正文</titleHead>
       <loading v-if="isLoading"></loading>
-      <div v-html="content" :class="`main ${store.state.darkMode ? 'dark' : ''}`" ref="main" @mouseup="getSelect"></div>
+      <div v-html="content" :class="`main ${store.state.darkMode ? 'dark' : ''}`" ref="main" @mouseup="getSelect" @click="largePic"></div>
     </div>
     <div :class="`right ${store.state.darkMode ? 'dark_background' : ''}`">
       <div :class="noteMode ? 'noteMode modeOn' : 'noteMode'" @click="openNote">批注模式</div>
@@ -95,6 +95,16 @@ function openNote() {
     setTimeout(() => {
       showToast.value = false;
     }, 3000)
+  }
+}
+
+function largePic(e) {
+  if(e.target.tagName === 'IMG') {
+    if(e.target.style.width === '100%') {
+      e.target.style.width = '40%'
+    } else {
+      e.target.style.width = '100%'
+    }
   }
 }
 
@@ -609,7 +619,7 @@ a:hover {
 
 .main:deep(img) {
   display: block;
-  width: 100%;
+  width: 40%;
   margin: 20px auto;
   border-radius: 25px;
   transition: all 0.3s;
