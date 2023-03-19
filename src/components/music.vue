@@ -66,12 +66,16 @@ async function changePlayState() {
       const result = await axios.get(`/song/url?id=${playList.value[currentIndex.value].id}`);
       currentUrl.value = result.data.data[0].url;
       const lyrResult = await axios.get(`/lyric/new?id=${playList.value[currentIndex.value].id}`);
+      await audio.value.play();
+      songTime.value = handleSongTime(audio.value.duration);
       if (lyrResult.data.tlyric) {
         handleTrans(lyrResult.data.tlyric.lyric);
       }
+      console.log(lyrResult.data.lrc.lyric)
       handleLyr(lyrResult.data.lrc.lyric)
+    } else {
+      audio.value.play();
     }
-    audio.value.play();
     playState.value = '暂停';
   }
   else if (playState.value === '暂停') {
@@ -106,23 +110,30 @@ async function changePlayList() {
 
 function handleTrans(lyricsList) {
   const list = lyricsList.split('\n');
-  console.log(list)
   for (let i = 0; i < list.length; i++) {
     if (list[i][0] === '[' && list[i][1] === '0') {
-      lyricsTrans.value.push(list[i].split(']')[1]);
+      if(list[i].split(']')[1]) {
+        lyricsTrans.value.push(list[i].split(']')[1]);
+      }
     }
   }
+  console.log(lyricsTrans.value)
 }
 
 function handleLyr(lyricsList) {
   const list = lyricsList.split('\n');
+  console.log(list)
   for (let i = 0; i < list.length; i++) {
     if (list[i][0] === '[' && list[i][1] === '0') {
       const time = handleTime(list[i].split("]")[0]);
-      lyrTime.value.push(time)
-      lyrics.value.push(list[i].split(']')[1]);
+      if(list[i].split(']')[1]) {
+        lyrics.value.push(list[i].split(']')[1]);
+        lyrTime.value.push(time)
+      }
     }
   }
+  console.log(lyrics.value)
+  console.log(lyrTime.value)
 }
 
 
