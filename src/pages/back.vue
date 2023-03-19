@@ -6,7 +6,7 @@
       <music class="music"></music>
     </div>
     <div class="center" v-if="store.state.isLogin">
-      <chart></chart>
+      <chart :key="key"></chart>
       <div class="center_bottom">
         <uploadBlog></uploadBlog>
         <manageBlog></manageBlog>
@@ -18,11 +18,11 @@
     </div>
   </div>
   <login v-if="!store.state.isLogin"></login>
-  <l2d></l2d>
+  <l2d :key="key"></l2d>
 </template>
 
 <script setup>
-import { ref, onMounted, watch } from 'vue';
+import { ref, onMounted, watch, onActivated } from 'vue';
 import setSelf from '../components/setSelf.vue';
 import login from '../components/login.vue';
 import music from '../components/music.vue';
@@ -39,7 +39,11 @@ const container = ref(null);
 const mainCanvas = ref(null);
 const router = useRouter();
 const store = useStore();
+let key = 0;
 
+onActivated(() => {
+  key++;
+})
 </script>
 
 <style scoped>
