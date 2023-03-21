@@ -147,6 +147,12 @@ async function request() {
   }
 }
 
+@media  screen and (max-width: 600px) {
+  .mode_button {
+    font-size: 12px;
+  }  
+}
+
 
 
 
