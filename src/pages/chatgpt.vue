@@ -16,7 +16,7 @@ import sentence from '../components/sentence.vue';
 import { useStore } from 'vuex';
 import useMarkdown from 'markdown-it'
 
-const md = useMarkdown()
+const md = new useMarkdown();
 
 const store = useStore();
 const list = ref([]);
