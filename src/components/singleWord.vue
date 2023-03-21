@@ -1,8 +1,7 @@
 <template>
   <div class="sentence_container">
     <img class="avatar" src="/src/assets/avatar.png" v-if="props.role === 'user'" alt="avatar">
-    <div :class="`sentence ${store.state.darkMode ? 'dark_background' : ''}`">
-    {{ props.content }}
+    <div v-html="props.content" :class="`sentence ${store.state.darkMode ? 'dark_background' : ''}`">
     </div>
     <img class="avatar" src="/src/assets/ChatGPT.png" v-if="props.role !== 'user'" alt="avatar">
   </div>
@@ -141,6 +140,11 @@ onMounted(() => {
   .sentence {
     width: 400px;
     font-size: 14px;
+  }
+  .avatar {
+    width: 30px;
+    height: 30px;
+    border-radius: 8px;
   }
 }
 
