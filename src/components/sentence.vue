@@ -9,11 +9,15 @@
 </template>
 
 <script setup>
+import { onMounted } from 'vue';
 import { useStore } from 'vuex';
 
 
 const props = defineProps(['role','content']);
 const store = useStore()
+onMounted(() => {
+  console.log(props.content)
+})
 
 
 </script>

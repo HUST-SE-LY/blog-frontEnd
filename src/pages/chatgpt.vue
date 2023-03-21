@@ -48,7 +48,7 @@ async function request() {
     const result = await axios.post('/chat', {
       question: word,
     })
-    list.value.push({ role: 'assistent', content: result.data.answer[0].message.content });
+    list.value.push({ role: 'assistent', content: result.data.answer[0].message.content, html: md.render(result.data.answer[0].message.content) });
     placeholder.value = "输入您的问题，回车发送"
   } catch (err) {
     list.value.push({ role: 'assistent', content: "糟糕，服务器故障！" });
