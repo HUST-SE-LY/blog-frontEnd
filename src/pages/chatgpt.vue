@@ -2,7 +2,7 @@
   <div class="chatgpt_container">
     <div class="mode_button" @click="memory = !memory">记忆模式：{{ memory ? '开' : '关' }}</div>
     <div class="sentence_box">
-      <sentence v-for="sentence in list" :role="sentence.role" :content="sentence.html?sentence.html:sentence.content"></sentence>
+      <singleWord v-for="sentence in list" :role="sentence.role" :content="sentence.html?sentence.html:sentence.content"></singleWord>
     </div>
     <textarea :readonly="readonly" v-model="currentQuestion" @keyup.enter="request"
       :class="`input ${store.state.darkMode ? 'dark_background' : ''}`" :placeholder="placeholder"></textarea>
@@ -12,7 +12,7 @@
 <script setup>
 import { ref } from 'vue';
 import useAxios from '../composables/useAxios';
-import sentence from '../components/sentence.vue';
+import singleWord from '../components/singleWord.vue';
 import { useStore } from 'vuex';
 import useMarkdown from 'markdown-it'
 
