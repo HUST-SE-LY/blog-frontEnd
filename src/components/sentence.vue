@@ -2,7 +2,7 @@
   <div class="sentence_container">
     <img class="avatar" src="/src/assets/avatar.png" v-if="props.role === 'user'" alt="avatar">
     <div :class="`sentence ${store.state.darkMode ? 'dark_background' : ''}`">
-      <div v-html="props.content" class="main"></div>
+    {{ props.content }}
     </div>
     <img class="avatar" src="/src/assets/ChatGPT.png" v-if="props.role !== 'user'" alt="avatar">
   </div>
