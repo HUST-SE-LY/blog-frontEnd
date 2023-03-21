@@ -67,6 +67,7 @@ async function request() {
   margin: 0 auto;
   cursor: pointer;
   color: rgba(130, 170, 255);
+  text-align: center;
 }
 
 .mode_button:hover {
