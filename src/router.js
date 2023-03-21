@@ -10,7 +10,7 @@ const blog = () => {return import('./pages/blog.vue')};
 const back = () => {return import('./pages/back.vue')};
 const about = () => {return import('./pages/about.vue')};
 const friendLink = () => { return import('./pages/friendLink.vue')}
-
+const chatgpt = () => { return import('./pages/chatgpt.vue')}
 const routes = [
   {
     path:"/",
@@ -48,6 +48,12 @@ const routes = [
     component: friendLink,
     meta: {
       title: '友链'
+    }
+  },{
+    path: '/chat',
+    component: chatgpt,
+    meta: {
+      title: '聊天ai'
     }
   }
 ]

@@ -2,8 +2,8 @@ import axios from "axios";
 
 function useAxios() {
   const instance = axios.create({
-    timeout: 10000,
-    baseURL: "api",
+    timeout: 3000000,
+    baseURL: "api"
   });
 
   instance.interceptors.request.use((config) => {

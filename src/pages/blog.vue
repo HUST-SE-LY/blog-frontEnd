@@ -604,8 +604,7 @@ a:hover {
 
 .main:deep(h4) {
   font-size: 24px;
-  line-height: 58px;
-}
+  line-height: 58px;<slot></slot>
 
 .main:deep(h5) {
   font-size: 20px;

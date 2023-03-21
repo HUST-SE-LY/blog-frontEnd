@@ -3,6 +3,7 @@
     <router-link to="/home" class="link">首页</router-link>
     <router-link to="/back" class="link">后台</router-link>
     <router-link to="/friends" class="link">友链</router-link>
+    <router-link to="/chat" class="link">聊天</router-link>
     <div class="right">
       <div class="button" v-if="!isLogin" @click="store.commit('showLogin')">登录</div>
       <div class="avatar" v-else></div>
@@ -108,12 +109,60 @@ watch(() => routes.path,(newVal) => {
 }
 
 .button:hover {
-  color: rgba(130, 170, 255);
+  color: rgba(130, 170, 255)
+
+}
+
+@media screen and (max-width:1100px) {
+  .head_container {
+    gap: 80px;
+    padding: 0 100px 0 100px;
+  }
+  .link {
+    font-size: 14px;
+  }
+
+  .button {
+    font-size: 14px;
+  }
+
+}
+
+@media screen and (max-width:800px) {
+  .head_container {
+    gap: 60px;
+    padding: 0 100px 0 100px;
+  }
+  .link {
+    font-size: 14px;
+  }
+
+  .button {
+    font-size: 14px;
+  }
+
+
 }
 
 @media screen and (max-width:700px) {
   .head_container {
     gap: 50px;
+    padding: 0 100px 0 100px;
+  }
+  .link {
+    font-size: 14px;
+  }
+
+  .button {
+    font-size: 14px;
+  }
+
+
+}
+
+@media screen and (max-width:650px) {
+  .head_container {
+    gap: 30px;
     padding: 0 100px 0 100px;
   }
   .link {

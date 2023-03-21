@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 import './style.css'
 import App from './App.vue'
 import router from './router'
-import Highlight from './assets/plugin/highlight/highlight'; 
+
 import persistState from './assets/plugin/vuex/persist';
 import { createStore } from 'vuex';
 
@@ -51,5 +51,4 @@ const store = createStore({
 const app = createApp(App);
 app.use(store);
 app.use(router);
-app.use(Highlight);
 app.mount("#app");

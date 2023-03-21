@@ -43,4 +43,6 @@ onMounted(async () => {
 .fade-leave-active {
   transition: opacity 0.5s;
 }
+
+
 </style>

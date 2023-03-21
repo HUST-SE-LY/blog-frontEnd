@@ -13,6 +13,7 @@
     "canvas-nest.js": "^2.0.4",
     "echarts": "^5.4.1",
     "highlight.js": "^11.7.0",
+    "markdown-it": "^13.0.1",
     "vue": "^3.2.45",
     "vue-router": "4",
     "vuex": "^4.0.2"
