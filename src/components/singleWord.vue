@@ -1,7 +1,7 @@
 <template>
   <div class="sentence_container">
     <img class="avatar" src="/src/assets/avatar.png" v-if="props.role === 'user'" alt="avatar">
-    <div v-html="props.content" :class="`sentence ${store.state.darkMode ? 'dark_background' : ''}`">
+    <div v-html="props.content" :class="`sentence main ${store.state.darkMode ? 'dark_background' : ''}`">
     </div>
     <img class="avatar" src="/src/assets/ChatGPT.png" v-if="props.role !== 'user'" alt="avatar">
   </div>
@@ -22,6 +22,11 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@font-face {
+  font-family: Consolas;
+  src: url(../font/consolas.ttf);
+}
+
 @keyframes movein {
   from {
     transform: translateY(10px);
