@@ -15,8 +15,19 @@ import useAxios from '../composables/useAxios';
 import singleWord from '../components/singleWord.vue';
 import { useStore } from 'vuex';
 import useMarkdown from 'markdown-it'
+import hljs from 'highlight.js'
 
-const md = new useMarkdown();
+const md = new useMarkdown({
+  highlight: function (str, lang) {
+    if (lang && hljs.getLanguage(lang)) {
+      try {
+        return hljs.highlight(str, { language: lang }).value;
+      } catch (__) {}
+    }
+
+    return ''; // use external default escaping
+  }
+});
 
 const store = useStore();
 const list = ref([]);

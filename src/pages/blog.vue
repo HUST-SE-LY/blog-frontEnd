@@ -127,6 +127,14 @@ function createTree(doms) {
   for (let i = 0; i < codes.length; i++) {
     codes[i].id = `code_${i}`
   }
+  addCodeTag()
+}
+
+function addCodeTag() {
+  const preList = document.querySelectorAll('pre');
+  preList.forEach((el) => {
+    el.firstChild.setAttribute('language', el.firstChild.className.split('-')[1])
+  });
 }
 
 async function getNotes() {
@@ -512,7 +520,10 @@ a:hover {
 }
 
 
+
+
 .main:deep(pre) {
+  position: relative;
   padding: 10px;
   border-radius: 10px;
   background-color: v-bind(store.state.darkMode ? '#242424' : '#f6f8fa');
@@ -522,12 +533,25 @@ a:hover {
   margin-bottom: 20px;
 }
 
+.main:deep(pre) code::before {
+  position: absolute;
+  content: attr(language);
+  top: 5px;
+  right: 10px;
+  font-size: 14px;
+}
+
 .main:deep(.note) {
   background-color: rgba(30, 170, 255, 0.3);
 }
 
 
-.main:deep(.hljs-keyword),
+.main:deep(.hljs-keyword), .main:deep(.hljs-built_in) {
+  font-style: italic;
+  color:  v-bind(store.state.darkMode ? '#c792ea' : '#00f');;
+}
+
+
 .main:deep(.hljs-built_in),
 .main:deep(.hljs-name),
 .main:deep(.hljs-selector-tag),
@@ -547,8 +571,8 @@ a:hover {
   color: v-bind(store.state.darkMode ? '#f07178' : '#a31515');
 }
 
-.main:deep(.hljs-attr) {
-  color: v-bind(store.state.darkMode ? '#f07178' : '#a31515');
+.main:deep(.hljs-attr), .main:deep(.hljs-property) {
+  color: v-bind(store.state.darkMode ? '#a6accd' : '#a31515');
 }
 
 .main:deep(.hljs-comment),
@@ -572,11 +596,12 @@ a:hover {
 
 .main:deep(pre) code {
   background: transparent;
-  color: v-bind(store.state.darkMode ? '#676e95' : 'black');
+  color: v-bind(store.state.darkMode ? '#89ddff' : 'black');
   font-family: 'Consolas';
   line-height: 24px;
   font-size: 16px;
 }
+
 
 .main:deep(li) {
   margin-left: 30px;
