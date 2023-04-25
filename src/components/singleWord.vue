@@ -183,18 +183,28 @@ const store = useStore()
 
 
 @media screen and (max-width:800px) {
+  .self_container {
+    width: 500px;
+  }
   .sentence {
     width: 500px;
   }
 }
 
 @media screen and (max-width:700px) {
+  .self_container {
+    width: 450px;
+  }
   .sentence {
     width: 450px;
   }
 }
 
 @media screen and (max-width:650px) {
+  .self_container {
+    width: 400px;
+    font-size: 14px;
+  }
   .sentence {
     width: 400px;
     font-size: 14px;
@@ -207,6 +217,10 @@ const store = useStore()
 }
 
 @media screen and (max-width:550px) {
+  .self_container {
+    width: 350px;
+    font-size: 14px;
+  }
   .sentence {
     width: 350px;
     font-size: 14px;
@@ -249,6 +263,10 @@ const store = useStore()
 }
 
 @media screen and (max-width:500px) {
+  .self_container {
+    width: 300px;
+    font-size: 12px;
+  }
   .sentence {
     width: 300px;
     font-size: 12px;
