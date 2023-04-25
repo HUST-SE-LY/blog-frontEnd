@@ -36,6 +36,7 @@ const store = useStore()
 }
 
 .self_container {
+  text-align: right;
   width: 600px;
   padding: 20px;
   border-radius: 15px;
