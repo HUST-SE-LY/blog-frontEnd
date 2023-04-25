@@ -117,7 +117,6 @@ function handleTrans(lyricsList) {
       }
     }
   }
-  console.log(lyricsTrans.value)
 }
 
 function handleLyr(lyricsList) {
@@ -132,8 +131,6 @@ function handleLyr(lyricsList) {
       }
     }
   }
-  console.log(lyrics.value)
-  console.log(lyrTime.value)
 }
 
 

@@ -24,6 +24,7 @@ import { useStore } from 'vuex';
 
 const container = ref(null);
 const mainCanvas = ref(null);
+
 const store = useStore();
 
 

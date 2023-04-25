@@ -70,7 +70,7 @@ import music from '../components/music.vue';
 import login from '../components/login.vue';
 import { useStore } from 'vuex';
 import { computed } from '@vue/reactivity';
-import { onBeforeRouteLeave, onBeforeRouteUpdate } from 'vue-router';
+import { onBeforeRouteLeave } from 'vue-router';
 
 const store = useStore();
 const main = ref(null)

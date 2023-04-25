@@ -13,7 +13,7 @@
     <div class="right">
       <img :src="url" alt="" class="home_pic" ref="pic">
     </div>
-
+    <toast v-if="showToast">这篇博客已上锁！</toast>
   </div>
 </template>
 
@@ -21,13 +21,15 @@
 import singleTag from './singleTag.vue';
 import useAxios from '../composables/useAxios';
 import { nextTick, onMounted, ref } from 'vue';
-import { useRouter } from 'vue-router';
+import { onBeforeRouteLeave, useRouter } from 'vue-router';
+import toast from './toast.vue';
 const router = useRouter();
 const props = defineProps(['blogInfo']);
 const axios = useAxios();
 const tagList = ref([]);
 const pic = ref(null);
 const url = ref('../assets/picture.svg');
+const showToast = ref(false);
 
 onMounted(async () => {
   const result = await axios.post('/get/blogTag',{
@@ -45,8 +47,17 @@ onMounted(async () => {
 })
 
 async function intoDetail() {
+  if(props.blogInfo.lock) {
+    showToast.value = true;
+    setTimeout(() => {
+      showToast.value = false;
+    },3000)
+    return ;
+  }
   router.push(`/blog/${props.blogInfo.id}`)
-}
+} 
+
+
 </script>
 
 <style scoped>

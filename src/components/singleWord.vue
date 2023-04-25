@@ -1,22 +1,19 @@
 <template>
   <div class="sentence_container">
-    <img class="avatar" src="/src/assets/avatar.png" v-if="props.role === 'user'" alt="avatar">
-    <div v-html="props.content" :class="`sentence main ${store.state.darkMode ? 'dark_background' : ''}`">
-    </div>
     <img class="avatar" src="/src/assets/ChatGPT.png" v-if="props.role !== 'user'" alt="avatar">
+    <div v-html="props.content" v-if="props.role !== 'user'" :class="`sentence main ${store.state.darkMode ? 'dark_background' : ''}`">
+    </div>
+    <div v-html="props.content" class="main self_container" v-else>
+    </div>
+    <img class="avatar" src="/src/assets/avatar.png" v-if="props.role === 'user'" alt="avatar">
   </div>
 </template>
 
 <script setup>
-import { onMounted } from 'vue';
 import { useStore } from 'vuex';
-
 
 const props = defineProps(['role','content']);
 const store = useStore()
-onMounted(() => {
-  
-})
 
 
 </script>
@@ -36,6 +33,14 @@ onMounted(() => {
     opacity: 1;
   }
   
+}
+
+.self_container {
+  width: 600px;
+  padding: 20px;
+  border-radius: 15px;
+  background-color: rgba(169, 233, 122,0.8);
+  box-shadow: 0px 0px 20px rgba(0,0,0,0.05);
 }
 
 .sentence_container {
