@@ -1,4 +1,4 @@
-# Cosini's Blog
+# Coisini's Blog
 you can visit the project here https://www.coisini.love
 the backEnd project: https://github.com/HUST-SE-LY/blog-backEnd
 
